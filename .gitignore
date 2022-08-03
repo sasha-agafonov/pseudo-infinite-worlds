@@ -1,7 +1,0 @@
-*.txt
-*.cmake
-main
-.git
-*.a
-.gitignore
-CMakeFiles
