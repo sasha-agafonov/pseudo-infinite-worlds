@@ -9,12 +9,23 @@
 class renderer {
 
 public:
+
     renderer(GLFWwindow* window);
 
+    void setup_camera();
+    void setup_lights();
+    void setup_terrain();
+    void setup_shaders();
+    void setup_states();
     void setup_scene();
+
+
+
     void render_scene();
 
+
     shader* happy_shader;
+    //shader* unhappy_shader;
     shader* light_shader;
 
     camera* happy_camera;

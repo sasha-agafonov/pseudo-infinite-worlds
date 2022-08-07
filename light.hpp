@@ -7,19 +7,16 @@ class light {
 
     public:
 
-        light(glm :: vec3 light_colour,
-              glm :: vec3 light_direction);
+        light(glm :: vec3 direction,
+              glm :: vec3 ambient,
+              glm :: vec3 diffuse,
+              glm :: vec3 specular);
 
-        light(glm :: vec3 light_colour,
-              glm :: vec3 light_direction,
-              glm :: vec3 light_position);
-
-        float ambient;
-        float diffuse;
-        float specular;
-
-        glm :: vec3 light_direction;
-        glm :: vec3 light_position;
+        glm :: vec3 direction;
+        glm :: vec3 position;
+        glm :: vec3 ambient;
+        glm :: vec3 diffuse;
+        glm :: vec3 specular;
 
 };
 

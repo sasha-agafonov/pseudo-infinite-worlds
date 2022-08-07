@@ -74,7 +74,7 @@ shader :: shader(const char* vert_shader_path, const char* geo_shader_path, cons
         std :: cout << "Error: could not load one or more shaders!" << std :: endl;
     }
 
-    create_program(vert_shader_source.c_str(), frag_shader_source.c_str());
+    create_program(vert_shader_source.c_str(), geo_shader_source.c_str(), frag_shader_source.c_str());
 }
 
 
@@ -117,9 +117,11 @@ void shader :: create_program(const char* vert_shader_source, const char* geo_sh
     glCompileShader(frag_shader);
 
     program_id = glCreateProgram();
+
     glAttachShader(program_id, vert_shader);
     glAttachShader(program_id,  geo_shader);
     glAttachShader(program_id, frag_shader);
+
     glLinkProgram(program_id);
 
     glDeleteShader(vert_shader);

@@ -24,6 +24,12 @@ enum TRANSFORMATIONS {
     ROTATE
 };
 
+enum CULL_FACE {
+    DISABLED,
+    FRONT,
+    BACK
+};
+
 extern int extern_width;
 extern int extern_height;
 extern int extern_polygon_mode;

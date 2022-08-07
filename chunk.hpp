@@ -21,11 +21,9 @@ class chunk {
         void draw();
 
         int random_number(int seed);
-        unsigned int hash(unsigned int x);
         float perlin_noise(int position_x, int position_y);
         float smoothstep(float vec_1, float vec_2, float weight);
 
-        glm :: vec2 generate_gradient(int position_x, int position_y);
 
         int vertices_per_side;
         unsigned int vao, vbo, ebo;

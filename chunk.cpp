@@ -60,12 +60,12 @@ void chunk :: build_indices() {
         for (int index_x = 0; index_x < vertices_per_side - 1; index_x++) {
 
             indices.push_back(index_x + (index_y) * vertices_per_side);
-            indices.push_back(index_x + (index_y + 1) * vertices_per_side);
             indices.push_back(index_x + (index_y) * vertices_per_side + 1);
+            indices.push_back(index_x + (index_y + 1) * vertices_per_side);
 
             indices.push_back(index_x + (index_y) * vertices_per_side + 1);
-            indices.push_back(index_x + (index_y + 1) * vertices_per_side);
             indices.push_back(index_x + (index_y + 1) * vertices_per_side + 1);
+            indices.push_back(index_x + (index_y + 1) * vertices_per_side);
         }
     }
 }
@@ -140,7 +140,7 @@ void chunk :: build_gradients(int position_x, int position_y) {
             //std :: cout << "(" << gradient_y << ", " << gradient_x << ")";
 
             //glm :: vec2 test = get_gradient((int)gradient_x, (int)gradient_y);
-            gradient_row.push_back(get_gradient((int)gradient_x, (int)gradient_y));
+            gradient_row.push_back(get_gradient((int)gradient_y, (int)gradient_x));
 
 
             //std :: cout << "(" << gradient_y << ", " << gradient_x << ") " << "value: " << test.x << ", " << test.y;
@@ -153,21 +153,28 @@ void chunk :: build_gradients(int position_x, int position_y) {
         gradients.push_back(gradient_row);
         //std :: cout << "over " << std :: endl;
     }
+    int m = 0;
+    for (int i = 0; i < gradients.size(); i++) {
+        for (int j = 0; j < gradients[0].size(); j++) {
+            m++;
+        }
+    }
+    //std :: cout << "grads per chu: " << m << std ::endl;
     //std :: cout << "hangup " << std :: endl;
 }
 
 
-glm :: vec2 chunk :: generate_gradient(int position_x, int position_y) {
-
-    glm :: vec2 gradient;
-
-    gradient.x = hash(abs(position_x + SEED * position_y)) % 100;
-    gradient.y = hash(abs(position_y - SEED * position_x)) % 100;
-    if (gradient.x == 0 && gradient.y == 0) gradient.x = 1;
-
-    return gradient;
-
-}
+// glm :: vec2 chunk :: generate_gradient(int position_x, int position_y) {
+//
+//     glm :: vec2 gradient;
+//
+//     gradient.x = hash(abs(position_x + SEED * position_y)) % 100;
+//     gradient.y = hash(abs(position_y - SEED * position_x)) % 100;
+//     if (gradient.x == 0 && gradient.y == 0) gradient.x = 1;
+//
+//     return gradient;
+//
+// }
 
 float chunk :: perlin_noise(int position_x, int position_y) {
 
@@ -215,12 +222,6 @@ float chunk :: smoothstep(float vec_1, float vec_2, float weight) {
     return (vec_2 - vec_1) * ((weight * (weight * 6 - 15) + 10) * weight * weight * weight) + vec_1;
 }
 
-unsigned int chunk :: hash(unsigned int x) {
-    x = ((x >> 16) ^ x) * 0x45d9f3b;
-    x = ((x >> 16) ^ x) * 0x45d9f3b;
-    x =  (x >> 16) ^ x;
-    return x;
-}
 
 
 float chunk :: dotGridGradient(int ix, int iy, float x, float y) {

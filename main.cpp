@@ -16,11 +16,10 @@ int extern_polygon_mode = FILL;
 int extern_movement_mode = FULL_STOP;
 int extern_anti_aliasing = MSAA_4X;
 int extern_transformation = ROTATE;
+int extern_cull_face = FRONT;
 
 
-void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
-    fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n", (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type, severity, message);
-}
+
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -69,10 +68,26 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         glDisable(GL_MULTISAMPLE);
     }
 
-    // TRANSFORMATIONS
+    // transformations
     if (key == GLFW_KEY_E && action == GLFW_PRESS && extern_transformation == NONE) extern_transformation = ROTATE;
     else if (key == GLFW_KEY_E && action == GLFW_PRESS && extern_transformation == ROTATE) extern_transformation = NONE;
 
+    // cull face
+    if (key == GLFW_KEY_C && action == GLFW_PRESS && extern_cull_face == DISABLED) {
+        extern_cull_face = FRONT;
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_FRONT);
+    }
+    else if (key == GLFW_KEY_C && action == GLFW_PRESS && extern_cull_face == FRONT) {
+        extern_cull_face = BACK;
+        //glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+    }
+    else if (key == GLFW_KEY_C && action == GLFW_PRESS && extern_cull_face == BACK) {
+        extern_cull_face = DISABLED;
+        glDisable(GL_CULL_FACE);
+        //glCullFace(GL_FRONT);
+    }
 }
 
 
@@ -99,8 +114,8 @@ int main(void) {
 
     renderer* bad_renderer = new renderer(window);
 
-    glEnable(GL_DEBUG_OUTPUT);
-    glDebugMessageCallback(MessageCallback, 0);
+    // glEnable(GL_DEBUG_OUTPUT);
+    // glDebugMessageCallback(MessageCallback, 0);
 
     bad_renderer -> setup_scene();
     bad_renderer -> render_scene();

@@ -9,8 +9,9 @@
 #include <GLFW/glfw3.h>
 
 
-sun :: sun(glm :: vec3 sun_position, glm :: vec3 sun_colour, glm :: vec3 light_colour,
-           glm :: vec3 light_direction) : light(light_colour, light_direction) {
+sun :: sun(glm :: vec3 sun_position,  glm :: vec3 sun_colour,    glm :: vec3 light_direction,
+           glm :: vec3 light_ambient, glm :: vec3 light_diffuse, glm :: vec3 light_specular)
+           : light(light_direction, light_ambient, light_diffuse, light_specular) {
 
     this -> sun_position = sun_position;
     this -> sun_colour = sun_colour;

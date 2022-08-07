@@ -12,8 +12,10 @@ class sun : public light {
 
         sun(glm :: vec3 sun_position,
             glm :: vec3 sun_colour,
-            glm :: vec3 light_colour,
-            glm :: vec3 light_direction);
+            glm :: vec3 light_direction,
+            glm :: vec3 light_ambient,
+            glm :: vec3 light_diffuse,
+            glm :: vec3 light_specular);
 
         void build_vertices();
         void build_indices();
