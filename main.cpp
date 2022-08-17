@@ -19,7 +19,18 @@ int extern_transformation = ROTATE;
 int extern_cull_face = FRONT;
 
 
-
+void GLAPIENTRY MessageCallback(GLenum source,
+                                GLenum type,
+                                GLuint id,
+                                GLenum severity,
+                                GLsizei length,
+                                const GLchar* message,
+                                const void* userParam) {
+                                    
+  fprintf( stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+           ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
+            type, severity, message );
+}
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -114,8 +125,8 @@ int main(void) {
 
     renderer* bad_renderer = new renderer(window);
 
-    // glEnable(GL_DEBUG_OUTPUT);
-    // glDebugMessageCallback(MessageCallback, 0);
+    glEnable(GL_DEBUG_OUTPUT);
+    glDebugMessageCallback(MessageCallback, 0);
 
     bad_renderer -> setup_scene();
     bad_renderer -> render_scene();

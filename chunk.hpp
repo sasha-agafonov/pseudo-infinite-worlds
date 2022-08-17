@@ -19,9 +19,7 @@ class chunk {
 
         glm :: vec2 get_gradient(int ,int );
         void draw();
-
-        int random_number(int seed);
-        float perlin_noise(int position_x, int position_y);
+        float perlin_noise(float position_x, float position_y);
         float smoothstep(float vec_1, float vec_2, float weight);
 
 

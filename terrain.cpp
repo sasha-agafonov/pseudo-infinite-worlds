@@ -7,6 +7,9 @@
 
 #define GRADIENTS_PER_SIDE 4
 
+// shortest distance between consequtive gradients
+#define GRADIENT_OFFSET 12
+
 terrain :: terrain(glm :: ivec3 chunk_parameters, glm :: vec3 observer_position) {
 
     this -> chunk_side_length = chunk_parameters.z;
@@ -27,45 +30,48 @@ terrain :: terrain(glm :: ivec3 chunk_parameters, glm :: vec3 observer_position)
 
 void terrain :: initialise_chunks(int chunks_x, int chunks_y) {
 
-    // chunks.resize(chunks_y);
+    //initialise_gradients(chunks_x, chunks_y);
 
     for (auto i = 0; i < chunks_y; i++) {
-
-        // chunks[i].resize(chunks_x);
         std :: vector <chunk> chunk_row;
-
-        for (auto k = 0; k < chunks_x; k++) {
-            chunk_row.emplace_back(chunk_side_length, chunk_side_length * i, chunk_side_length * k);
-            //chunk_row.emplace_back(chunk_side_length, chunk_side_length * i, chunk_side_length * k);
-        }
+        for (auto k = 0; k < chunks_x; k++) chunk_row.emplace_back(chunk_side_length, chunk_side_length * i, chunk_side_length * k);
         chunks.push_back(chunk_row);
     }
 }
 
 
-void terrain :: initialise_gradients() {
-    // for (int i = 0; i < GRADIENTS_PER_SIDE; i++) {
-    //     std :: vector <gradient> gradient_row;
-    //     for (int j = 0; j < GRADIENTS_PER_SIDE; j++) {
-    //         gradient_row.emplace_back();
-    //     }
-    //     gradients.push_back(gradient_row);
-    // }
-}
+// void terrain :: initialise_gradients(int chunks_x, int chunks_x) {
+//
+//     for (int i = 0; i < chunk_side_length * sqrt(num_chunks); i += GRADIENT_OFFSET) {
+//
+//         std :: vector <gradient> gradient_row;
+//
+//         for (int k = 0; k < chunk_side_length * sqrt(num_chunks); k += GRADIENT_OFFSET) {
+//
+//             gradient_row.emplace_back(i, k);
+//
+//         }
+//
+//         gradients.push_back(gradient_row);
+//     }
+// }
 
 
 
 void terrain :: update_scene(glm :: ivec2 position_change) {
 
-    if (position_change.x < 0) {
-        std :: rotate(chunks.begin(), chunks.end(), chunks.end());
-        for (auto& chunk : chunks[chunks.size() - 1]) chunk.update_vertices(position_change.x, 0);
-    }
+    if (position_change.x < 0) for (auto& row : chunks) for (auto& chunk : row) chunk.update_vertices(position_change.x, 0);
+        // std :: rotate(chunks.begin(), chunks.end(), chunks.end());
+        // for (auto& chunk : chunks[chunks.size() - 1]) chunk.update_vertices(position_change.x, 0);
 
-    if (position_change.x > 0) {
-        std :: rotate(chunks.rbegin(), std :: prev(chunks.rend()), chunks.rend());
-        for (auto& chunk : chunks[0]) chunk.update_vertices(position_change.x, 0);
-    }
+
+
+
+    if (position_change.x > 0) for (auto& row : chunks) for(auto& chunk : row) chunk.update_vertices(position_change.x, 0);
+
+        // std :: rotate(chunks.rbegin(), std :: prev(chunks.rend()), chunks.rend());
+        // for (auto& chunk : chunks[0]) chunk.update_vertices(position_change.x, 0);
+
 
     if (position_change.y > 0) {
         for (auto& row : chunks) std :: rotate(chunks.begin(), std :: next(chunks.begin()), chunks.end());
@@ -76,7 +82,7 @@ void terrain :: update_scene(glm :: ivec2 position_change) {
         for (auto& row : chunks) std :: rotate(chunks.rbegin(), std :: next(chunks.rbegin()), chunks.rend());
         for (auto& row : chunks) for (auto& chunk : row) chunk.update_vertices(0, position_change.y);
     }
-            std :: cout << "pos cha x: "<< position_change.x << "pos cha y " << position_change.y << std ::endl;
+        //    std :: cout << "pos cha x: "<< position_change.x << "pos cha y " << position_change.y << std ::endl;
 
 }
 

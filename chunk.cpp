@@ -25,6 +25,8 @@ void chunk :: build_vertices(int chunk_start_x, int chunk_start_y) {
     build_gradients(chunk_start.x, chunk_start.y);
     //std :: cout << "vertces: " << std ::endl;
 
+    float aligner = (float)(GRADIENTS_PER_SIDE - 1) / (float)(vertices_per_side - 1);
+
     for (int vertex_y = chunk_start.y; vertex_y < chunk_start.y + vertices_per_side; vertex_y++) {
 
         for (int vertex_x = chunk_start.x; vertex_x < chunk_start.x + vertices_per_side; vertex_x++) {
@@ -35,7 +37,7 @@ void chunk :: build_vertices(int chunk_start_x, int chunk_start_y) {
             // right-handed from now on
             vertices.push_back(vertex_y);
             //vertices.push_back(0.f);
-            vertices.push_back(40 * perlin_noise(vertex_y, vertex_x));
+            vertices.push_back(10 * perlin_noise(vertex_y * aligner, vertex_x * aligner));
             //std :: cout << "("<< vertex_y << ", " << vertex_x << ")" << " noise: " << 10 * perlin_noise(vertex_y, vertex_x) << " ";
 
             vertices.push_back(vertex_x);
@@ -176,13 +178,14 @@ void chunk :: build_gradients(int position_x, int position_y) {
 //
 // }
 
-float chunk :: perlin_noise(int position_x, int position_y) {
+float chunk :: perlin_noise(float point_x, float point_y) {
 
 
-     position_x = (((position_x % vertices_per_side) + vertices_per_side) % vertices_per_side);
-     position_y = (((position_y % vertices_per_side) + vertices_per_side) % vertices_per_side);
-    float point_x = (GRADIENTS_PER_SIDE - 1) / (float)(vertices_per_side - 1) * (((position_x % vertices_per_side) + vertices_per_side) % vertices_per_side);
-    float point_y = (GRADIENTS_PER_SIDE - 1) / (float)(vertices_per_side - 1) * (((position_y % vertices_per_side) + vertices_per_side) % vertices_per_side);
+    //position_x = (((position_x % vertices_per_side) + vertices_per_side) % vertices_per_side);
+    //position_y = (((position_y % vertices_per_side) + vertices_per_side) % vertices_per_side);
+
+    //float point_x = (GRADIENTS_PER_SIDE - 1) / (float)(vertices_per_side - 1) * (((position_x % vertices_per_side) + vertices_per_side) % vertices_per_side);
+    //float point_y = (GRADIENTS_PER_SIDE - 1) / (float)(vertices_per_side - 1) * (((position_y % vertices_per_side) + vertices_per_side) % vertices_per_side);
 
     int x0 = (int)floor(point_x);
     int x1 = x0 + 1;
@@ -204,13 +207,6 @@ float chunk :: perlin_noise(int position_x, int position_y) {
     value = smoothstep(ix0, ix1, sy);
     return value;
 
-
-
-
-}
-
-int chunk :: random_number(int seed) {
-    return ((seed * 1103515245 + 12345) / 65536) % 32768;
 }
 
 

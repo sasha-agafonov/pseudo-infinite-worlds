@@ -32,7 +32,7 @@ class terrain {
 
         // std :: list <std :: list <gradient>> gradients;
 
-    
+
         std :: vector <std :: vector <gradient>> gradients;
         std :: vector <std :: vector <chunk>> chunks;
 

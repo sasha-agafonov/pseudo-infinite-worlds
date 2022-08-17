@@ -18,7 +18,8 @@ public:
     void setup_shaders();
     void setup_states();
     void setup_scene();
-
+    void setup_static_uniforms();
+    void setup_dynamic_uniforms();
 
 
     void render_scene();

@@ -9,9 +9,11 @@
 #include <glm/ext.hpp>
 #include <iterator>
 
-#define CHUNKS_X 5
-#define CHUNKS_Y 5
-#define CHUNK_SIDE_LENGTH 50
+#define CHUNKS_X 10
+#define CHUNKS_Y 10
+#define CHUNK_SIDE_LENGTH 25
+
+// 5 5 50
 
 
 renderer :: renderer(GLFWwindow* window) {
@@ -33,8 +35,8 @@ void renderer :: setup_scene() {
 
 void renderer :: setup_camera() {
 
-    glm :: vec3 look_from((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 30.f, (CHUNKS_Y ) * (CHUNK_SIDE_LENGTH / 2.f));
-    glm :: vec3 look_at((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 30.f, 0.f);
+    glm :: vec3 look_from((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 10.f, (CHUNKS_Y ) * (CHUNK_SIDE_LENGTH / 2.f));
+    glm :: vec3 look_at((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 10.f, 0.f);
     glm :: vec3 look_up(0.f, 1.f, 0.f);
     happy_camera = new camera(look_from, look_at, look_up, CHUNK_SIDE_LENGTH);
     happy_camera -> polite_terrain = polite_terrain;
@@ -53,8 +55,6 @@ void renderer :: setup_states() {
 
     glEnable(GL_MULTISAMPLE);
     glEnable(GL_DEPTH_TEST);
-    // glEnable(GL_CULL_FACE);
-    // glCullFace(GL_BACK);
     glClearColor(0.6f, 0.8f, 0.8f, 1.f);
 
 }
@@ -91,12 +91,15 @@ void renderer :: render_scene() {
     //unsigned int uniform_light_position = glGetUniformLocation(happy_shader -> program_id, "light_position");
     unsigned int uniform_view_position = glGetUniformLocation(happy_shader -> program_id, "view_position");
 
+    unsigned int uniform_clear_colour = glGetUniformLocation(happy_shader -> program_id, "clear_colour");
 
     unsigned int uniform_light_dir = glGetUniformLocation(happy_shader -> program_id, "direction");
     unsigned int uniform_light_amb = glGetUniformLocation(happy_shader -> program_id, "ambient");
     unsigned int uniform_light_diff = glGetUniformLocation(happy_shader -> program_id, "diffuse");
     unsigned int uniform_light_spec = glGetUniformLocation(happy_shader -> program_id, "specular");
 
+
+    // unsigned int uniform_observer = glGetUniformLocation(happy_shader -> program_id, "observer");
     glm :: mat4 model_mx;
     glm :: mat4 view_mx;
     glm :: mat4 projection_mx;
@@ -110,12 +113,16 @@ void renderer :: render_scene() {
     glm :: vec3 specular(0.6f, 0.6f, 0.6f);
     glm :: vec3 direction(2.f, -1.f, 20.f);
 
+    glm :: vec3 clear_colour(0.6f, 0.8f, 0.8f);
+
 
     glUniform3fv(uniform_light_dir, 1, glm :: value_ptr(glm :: vec3(1.f, -1.f, 1.f)));
     glUniform3fv(uniform_light_amb, 1, glm :: value_ptr(ambient));
     glUniform3fv(uniform_light_diff, 1, glm :: value_ptr(diffuse));
     glUniform3fv(uniform_light_spec, 1, glm :: value_ptr(specular));
     glUniform3fv(uniform_object_colour, 1, glm :: value_ptr(object_colour));
+
+    glUniform3fv(uniform_clear_colour, 1, glm :: value_ptr(clear_colour));
 
     light_shader -> use_program();
 
@@ -165,81 +172,10 @@ void renderer :: render_scene() {
         polite_terrain -> draw();
 
 
-  //
-  //       for(list <list<char *> >::iterator outer=moves.begin();outer!=moves.end();outer++) {
-  //
-  //           for(list<char *>::iterator inner=outer.begin();inner!=outer.end();inner++)
-  //     {
-  //
-  //     }
-  // }
-
-
-        // for(auto i1 = polite_terrain -> chunks.begin(); i1!=polite_terrain -> chunks.end();i1++)
-        // {
-        //     // list <int> & list2 = *i1;
-        //     for(auto j = list2.begin();j!=list2.end();j++)
-        //       {
-        //         cout<<*j<<" ";
-        //       }
-        //     cout<<endl;
-        // }
-
-        // for (polite_terrain -> chunks_row  = polite_terrain -> chunks.begin();
-        //      polite_terrain -> chunks_row != polite_terrain -> chunks.end();
-        //      polite_terrain -> chunks_row ++) {
-        //
-        //      for (polite_terrain -> chunks_col  = polite_terrain -> chunks_row.begin();
-        //           polite_terrain -> chunks_col != polite_terrain -> chunks_row.end();
-        //           polite_terrain -> chunks_col ++) {
-        //
-        //
-        //           }
-        //      }
-
-        // for (auto i = 0; i < polite_terrain -> chunks.size(); i++) {
-        //     for (auto k = 0; k < polite_terrain -> chunks[i].size(); k++) {
-        //         k.draw();
-        //     }
-        // }
-        // for (int i = 0; i < polite_terrain -> chunks.size(); i++) {
-        //     for (int k = 0; k < polite_terrain -> chunks[i].size(); k++) {
-        //         polite_terrain -> chunks[i][k].draw();
-        //     }
-        // }
-
-
-        //
-        // {
-        //     glBindVertexArray(polite_terrain -> chunks[i].vao);
-        //     glDrawElements(GL_TRIANGLES, polite_terrain -> chunks[i].chunk_indices.size(), GL_UNSIGNED_INT, 0);
-        // }
-
-
-
         light_shader -> use_program();
-
-        // model_mx = glm :: mat4(1.f);
-        // model_mx = glm :: translate(model_mx, sun_position);
-        // model_mx = glm :: translate(model_mx, glm :: vec3(2.f, 2.f, 2.f));
-        // model_mx = glm :: scale(model_mx, glm :: vec3(8.f, 8.f, 8.f));
-        //
-        // glUniformMatrix4fv(uniform_model_light, 1, GL_FALSE, glm :: value_ptr(model_mx));
-        // glUniformMatrix4fv(uniform_view_light, 1, GL_FALSE, glm :: value_ptr(view_mx));
-        // glUniformMatrix4fv(uniform_projection_light, 1, GL_FALSE, glm :: value_ptr(projection_mx));
-        //
-        // glBindVertexArray(light_vao);
-        // glDrawArrays(GL_TRIANGLES, 0, 36);
-
-
-
-
-        // light_shader -> use_program();
 
         model_mx = glm :: mat4(1.f);
         model_mx = glm :: translate(model_mx, sun_position);
-        // model_mx = glm :: scale(model_mx, glm :: vec3(8.f, 8.f, 8.f));
-
         glUniformMatrix4fv(uniform_model_light, 1, GL_FALSE, glm :: value_ptr(model_mx));
         glUniformMatrix4fv(uniform_view_light, 1, GL_FALSE, glm :: value_ptr(view_mx));
         glUniformMatrix4fv(uniform_projection_light, 1, GL_FALSE, glm :: value_ptr(projection_mx));

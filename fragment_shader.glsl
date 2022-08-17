@@ -4,6 +4,7 @@ out vec4 frag_colour;
 
 in vec3 fragment_position;
 in vec3 abnormal;
+in vec3 vex_pos_p;
 
 uniform vec3 direction;
 uniform vec3 ambient;
@@ -11,31 +12,34 @@ uniform vec3 diffuse;
 uniform vec3 specular;
 uniform vec3 view_position;
 uniform vec3 object_colour;
+uniform vec3 clear_colour;
+
+uniform vec3 observer;
 
 
 
-// uniform light kind_light;
-//uniform vec3 light_position;
-//uniform vec3 light_colour;
+vec3 interpolate_height_colour(vec3 pos) {
 
-// vec3 ambient(float intensity) {
-//     return intensity * light_colour;
-// }
-//
-// vec3 diffuse(float intensity) {
-//     vec3 diffuse_component = max(dot(normalize(abnormal), normalize(light_position - fragment_position)), 0.0) * light_colour;
-//     return intensity * diffuse_component;
-// }
-//
-// vec3 specular(float intensity, int power) {
-//     vec3 reflect_direction = reflect(-normalize(light_position - fragment_position), normalize(abnormal));
-//     vec3 view_direction = normalize(view_position - fragment_position);
-//     vec3 specular_component = pow(max(dot(view_direction, reflect_direction), 0.0), power) * light_colour;
-//     return intensity * specular_component;
-// }
+    float color_1 = (0.725 - 0.227) * pos.y / (5) + 0.227;
+    float color_2 = (0.662 - 0.552) * pos.y / (5) + 0.552;
+    float color_3 = (0.592 - 0.321) * pos.y / (5) + 0.321;
+
+    return vec3(color_1, color_2, color_3);
+}
+
+
+float lin_fog(float fragment, float fog_start, float fog_end) {
+
+    if (fragment < fog_start) return 0.f;
+    else if (fragment > fog_end) return 1.f;
+    return (1.f - (fog_end - fragment) / (fog_end - fog_start));
+}
 
 
 void main() {
+
+    vec3 height_colour = interpolate_height_colour(vex_pos_p);
+
     vec3 light_direction = normalize(- direction);
     vec3 ndiffuse = diffuse * max(dot(abnormal, light_direction), 0.0);
 
@@ -45,9 +49,23 @@ void main() {
     float spec = pow(max(dot(view_direction, reflect_direction), 0.0), 1.f);
     vec3 nspecular = specular * spec;
 
-    vec3 res = (ambient + ndiffuse + nspecular) * object_colour;
-    frag_colour = vec4(res, 1.0);
+    float fogval = lin_fog(length(view_position - fragment_position), 70.f, 100.f);
 
-    // vec3 result = (light.ambient + diffuse(0.5) + specular(0.4, 32)) * object_colour;
-    // frag_colour = vec4(result, 1.0);
+    // float mx = clear_colour.x;
+    //
+
+
+    //vec3 final_colour = vec3(cx, cy, cz);
+
+
+    vec3 res = (ambient + ndiffuse + nspecular) * height_colour;
+
+    float cx = (clear_colour.x - res.x) * fogval + res.x;
+    float cy = (clear_colour.y - res.y) * fogval + res.y;
+    float cz = (clear_colour.z - res.z) * fogval + res.z;
+
+    vec3 last = vec3(cx, cy, cz);
+
+    frag_colour = vec4(last, 1.0);
+
 }
