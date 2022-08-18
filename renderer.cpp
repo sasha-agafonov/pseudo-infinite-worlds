@@ -9,9 +9,9 @@
 #include <glm/ext.hpp>
 #include <iterator>
 
-#define CHUNKS_X 10
-#define CHUNKS_Y 10
-#define CHUNK_SIDE_LENGTH 25
+#define CHUNKS_X 7
+#define CHUNKS_Y 7
+#define CHUNK_SIDE_LENGTH 50
 
 // 5 5 50
 

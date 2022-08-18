@@ -49,7 +49,7 @@ void main() {
     float spec = pow(max(dot(view_direction, reflect_direction), 0.0), 1.f);
     vec3 nspecular = specular * spec;
 
-    float fogval = lin_fog(length(view_position - fragment_position), 70.f, 100.f);
+    float fogval = lin_fog(length(view_position - fragment_position), 70.f, 150.f);
 
     // float mx = clear_colour.x;
     //

@@ -31,21 +31,11 @@ void chunk :: build_vertices(int chunk_start_x, int chunk_start_y) {
 
         for (int vertex_x = chunk_start.x; vertex_x < chunk_start.x + vertices_per_side; vertex_x++) {
 
-
-            //std :: cout << vertex_x << " < ===x";
-
             // right-handed from now on
             vertices.push_back(vertex_y);
-            //vertices.push_back(0.f);
-            vertices.push_back(10 * perlin_noise(vertex_y * aligner, vertex_x * aligner));
-            //std :: cout << "("<< vertex_y << ", " << vertex_x << ")" << " noise: " << 10 * perlin_noise(vertex_y, vertex_x) << " ";
-
+            vertices.push_back(10 * perlin_noise (12 * perlin_noise(vertex_x, vertex_y), 4*  perlin_noise(vertex_y * aligner, vertex_x * aligner)));
             vertices.push_back(vertex_x);
 
-
-            // glm :: vec3 normal = (vertices[], 2, vertices[]);
-            // normal = normalize(normal);
-            // normals
             vertices.push_back(0.f);
             vertices.push_back(1.f);
             vertices.push_back(0.f);
@@ -123,6 +113,7 @@ void chunk :: update_vertices(int shift_x, int shift_y) {
 
 }
 
+
 void chunk :: build_gradients(int position_x, int position_y) {
 
 
@@ -145,10 +136,6 @@ void chunk :: build_gradients(int position_x, int position_y) {
             gradient_row.push_back(get_gradient((int)gradient_y, (int)gradient_x));
 
 
-            //std :: cout << "(" << gradient_y << ", " << gradient_x << ") " << "value: " << test.x << ", " << test.y;
-            //std :: cout << "("<< vertex_y << ", " << vertex_x << ")";
-            //std :: cout << " " << test.x;
-            //std :: cout << " " << test.y;
         }
         //std :: cout << std ::endl;
 
@@ -166,26 +153,7 @@ void chunk :: build_gradients(int position_x, int position_y) {
 }
 
 
-// glm :: vec2 chunk :: generate_gradient(int position_x, int position_y) {
-//
-//     glm :: vec2 gradient;
-//
-//     gradient.x = hash(abs(position_x + SEED * position_y)) % 100;
-//     gradient.y = hash(abs(position_y - SEED * position_x)) % 100;
-//     if (gradient.x == 0 && gradient.y == 0) gradient.x = 1;
-//
-//     return gradient;
-//
-// }
-
 float chunk :: perlin_noise(float point_x, float point_y) {
-
-
-    //position_x = (((position_x % vertices_per_side) + vertices_per_side) % vertices_per_side);
-    //position_y = (((position_y % vertices_per_side) + vertices_per_side) % vertices_per_side);
-
-    //float point_x = (GRADIENTS_PER_SIDE - 1) / (float)(vertices_per_side - 1) * (((position_x % vertices_per_side) + vertices_per_side) % vertices_per_side);
-    //float point_y = (GRADIENTS_PER_SIDE - 1) / (float)(vertices_per_side - 1) * (((position_y % vertices_per_side) + vertices_per_side) % vertices_per_side);
 
     int x0 = (int)floor(point_x);
     int x1 = x0 + 1;

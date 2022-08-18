@@ -29,6 +29,7 @@ class chunk {
         std :: vector <float> vertices;
         std :: vector <unsigned int> indices;
         std :: vector <std :: vector <glm :: vec2>> gradients;
+        std :: vector <std :: vector <glm :: vec2>> gradients_2;
 
 };
 

@@ -15,23 +15,18 @@ class terrain {
 
         terrain(glm :: ivec3 chunk_parameters, glm :: vec3 observer_position);
 
-        void initialise_chunks(int chunks_x, int chunks_y);
+        void initialise_chunks();
         void initialise_gradients();
         //void initialise_chunk_layout(int chunks_x, int chunks_y);
         void update_scene(glm :: ivec2 position_change);
         void draw();
 
         int num_chunks;
+        int chunks_x;
+        int chunks_y;
         int chunk_side_length;
-
-        // std :: list <chunk> :: iterator chunks_col;
-        // std :: list <std :: list <chunk>> :: iterator chunks_row;
-        // std :: list <std :: list <chunk>> chunks;
-
-        //std :: vector <std :: vector <gradient>> gradients;
-
-        // std :: list <std :: list <gradient>> gradients;
-
+        int chunk_selector_x;
+        int chunk_selector_y;
 
         std :: vector <std :: vector <gradient>> gradients;
         std :: vector <std :: vector <chunk>> chunks;
