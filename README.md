@@ -1,3 +1,2 @@
-# Pseudo-infinite Worlds
-
+ # <p align="center"> Pseudo-Infinite Worlds </p>
 
