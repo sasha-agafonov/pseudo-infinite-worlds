@@ -82,28 +82,21 @@ void terrain :: update_scene(glm :: ivec2 position_change) {
     //std :: cout << position_change.y << "dsya" << std :: endl;
     //std :: cout << "selc y: " << chunk_selector_y << std :: endl;
 
+    std :: cout << chunk_selector_y << " <------ selector y" << std :: endl;
+
+
 
     if (position_change.x < 0) {
 
-        for (auto& row : chunks) for (auto& chunk : row) chunk.update_vertices(position_change.x, 0);
-        //chunks[chunk_selector_y][chunk_selector_x]
-        //std :: cout << "- x" << std :: endl;
-
-        // for (int i = 0; i < chunks_x; i++) chunks[chunk_selector_y][i].update_vertices(position_change.x, 0);
-        // //for (auto& chunk : chunks[chunk_selector_y]) chunk.update_vertices(position_change.x, 0);
-        //
-        // if (chunk_selector_y == 0) chunk_selector_y = chunks_y - 1;
-        // else chunk_selector_y--;
+        for (auto& chunk : chunks[chunk_selector_y]) chunk.update_vertices(position_change.x * chunks_y, 0);
+        if (chunk_selector_y == 0) chunk_selector_y = chunks_y - 1;
+        else chunk_selector_y--;
     }
 
     if (position_change.x > 0) {
-        for (auto& row : chunks) for (auto& chunk : row) chunk.update_vertices(position_change.x, 0);
-
-        // std :: cout << "sdsaddsa" << std :: endl;
-        // for (auto& chunk : chunks[chunk_selector_y]) chunk.update_vertices(position_change.x, 0);
-        //
-        // if (chunk_selector_y >= chunks_y - 1) chunk_selector_y = 0;
-        // else chunk_selector_y++;
+        for (auto& chunk : chunks[chunk_selector_y]) chunk.update_vertices(position_change.x * chunks_y, 0);
+        if (chunk_selector_y == chunks_y - 1) chunk_selector_y = 0;
+        else chunk_selector_y++;
     }
 
 

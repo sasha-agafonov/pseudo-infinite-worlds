@@ -9,8 +9,8 @@
 #include <glm/ext.hpp>
 #include <iterator>
 
-#define CHUNKS_X 7
-#define CHUNKS_Y 7
+#define CHUNKS_X 20
+#define CHUNKS_Y 20
 #define CHUNK_SIDE_LENGTH 50
 
 // 5 5 50
@@ -35,8 +35,8 @@ void renderer :: setup_scene() {
 
 void renderer :: setup_camera() {
 
-    glm :: vec3 look_from((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 10.f, (CHUNKS_Y ) * (CHUNK_SIDE_LENGTH / 2.f));
-    glm :: vec3 look_at((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 10.f, 0.f);
+    glm :: vec3 look_from((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 20.f, (CHUNKS_Y ) * (CHUNK_SIDE_LENGTH / 2.f));
+    glm :: vec3 look_at((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 20.f, 0.f);
     glm :: vec3 look_up(0.f, 1.f, 0.f);
     happy_camera = new camera(look_from, look_at, look_up, CHUNK_SIDE_LENGTH);
     happy_camera -> polite_terrain = polite_terrain;

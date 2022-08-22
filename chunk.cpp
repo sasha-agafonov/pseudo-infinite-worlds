@@ -33,7 +33,7 @@ void chunk :: build_vertices(int chunk_start_x, int chunk_start_y) {
 
             // right-handed from now on
             vertices.push_back(vertex_y);
-            vertices.push_back(10 * perlin_noise (12 * perlin_noise(vertex_x, vertex_y), 4*  perlin_noise(vertex_y * aligner, vertex_x * aligner)));
+            vertices.push_back(12 *  perlin_noise(vertex_y * aligner, vertex_x * aligner));
             vertices.push_back(vertex_x);
 
             vertices.push_back(0.f);
