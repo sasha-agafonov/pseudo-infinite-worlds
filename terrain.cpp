@@ -18,6 +18,7 @@ terrain :: terrain(glm :: ivec3 chunk_parameters, glm :: vec3 observer_position)
     this -> num_chunks = this -> chunks_x * this -> chunks_y;
 
     initialise_chunks();
+    initialise_gradients();
 
 }
 
@@ -34,13 +35,23 @@ void terrain :: initialise_chunks() {
 
     for (auto i = 0; i < chunks_y; i++) {
         std :: vector <chunk> chunk_row;
-        for (auto k = 0; k < chunks_x; k++) chunk_row.emplace_back(chunk_side_length, chunk_side_length * i, chunk_side_length * k);
+        for (auto k = 0; k < chunks_x; k++) {
+            chunk_row.emplace_back(chunk_side_length, chunk_side_length * i, chunk_side_length * k);
+
+        }
         chunks.push_back(chunk_row);
     }
 
     chunk_selector_x = chunks_x - 1;
     chunk_selector_y = chunks_y - 1;
 
+}
+
+
+void terrain :: initialise_gradients() {
+    for (int i = 0; i < 3; i++) {
+            gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 2, 1.f);
+        }
 }
 
 // void terrain :: initialise_gradients() {
@@ -77,26 +88,20 @@ void terrain :: initialise_chunks() {
 
 void terrain :: update_scene(glm :: ivec2 position_change) {
 
-
-    //std :: cout << position_change.x << "dsa" << std :: endl;
-    //std :: cout << position_change.y << "dsya" << std :: endl;
-    //std :: cout << "selc y: " << chunk_selector_y << std :: endl;
-
-    std :: cout << chunk_selector_y << " <------ selector y" << std :: endl;
-
-
-
     if (position_change.x < 0) {
 
         for (auto& chunk : chunks[chunk_selector_y]) chunk.update_vertices(position_change.x * chunks_y, 0);
-        if (chunk_selector_y == 0) chunk_selector_y = chunks_y - 1;
-        else chunk_selector_y--;
+        (chunk_selector_y == 0) ? chunk_selector_y = chunks_y - 1 : chunk_selector_y--;
+        // if (chunk_selector_y == 0) chunk_selector_y = chunks_y - 1;
+        // else chunk_selector_y--;
     }
 
     if (position_change.x > 0) {
         for (auto& chunk : chunks[chunk_selector_y]) chunk.update_vertices(position_change.x * chunks_y, 0);
-        if (chunk_selector_y == chunks_y - 1) chunk_selector_y = 0;
-        else chunk_selector_y++;
+        (chunk_selector_y == chunks_y - 1) ? chunk_selector_y = 0 : chunk_selector_y++;
+
+        // if (chunk_selector_y == chunks_y - 1) chunk_selector_y = 0;
+        // else chunk_selector_y++;
     }
 
 

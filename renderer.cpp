@@ -9,9 +9,9 @@
 #include <glm/ext.hpp>
 #include <iterator>
 
-#define CHUNKS_X 20
-#define CHUNKS_Y 20
-#define CHUNK_SIDE_LENGTH 50
+#define CHUNKS_X 32
+#define CHUNKS_Y 32
+#define CHUNK_SIDE_LENGTH 32
 
 // 5 5 50
 
@@ -53,6 +53,7 @@ void renderer :: setup_terrain() {
 
 void renderer :: setup_states() {
 
+    glDisable(GL_DEBUG_OUTPUT);
     glEnable(GL_MULTISAMPLE);
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.6f, 0.8f, 0.8f, 1.f);
@@ -159,7 +160,7 @@ void renderer :: render_scene() {
 
         // glm :: vec3 sun_position = glm ::vec3(0.f, 0.f, -22.f);
         glm :: vec3 sun_position = view_position;
-        sun_position.x += 48.f;
+        sun_position.x += 24.f;
         sun_position.y += 32.f;
         sun_position.z -= 128.f;
 

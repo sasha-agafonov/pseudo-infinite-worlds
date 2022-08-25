@@ -201,6 +201,54 @@ glad.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/glad.c.s
 .PHONY : glad.c.s
 
+gradient.o: gradient.cpp.o
+.PHONY : gradient.o
+
+# target to build an object file
+gradient.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gradient.cpp.o
+.PHONY : gradient.cpp.o
+
+gradient.i: gradient.cpp.i
+.PHONY : gradient.i
+
+# target to preprocess a source file
+gradient.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gradient.cpp.i
+.PHONY : gradient.cpp.i
+
+gradient.s: gradient.cpp.s
+.PHONY : gradient.s
+
+# target to generate assembly for a file
+gradient.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gradient.cpp.s
+.PHONY : gradient.cpp.s
+
+gradient_field.o: gradient_field.cpp.o
+.PHONY : gradient_field.o
+
+# target to build an object file
+gradient_field.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gradient_field.cpp.o
+.PHONY : gradient_field.cpp.o
+
+gradient_field.i: gradient_field.cpp.i
+.PHONY : gradient_field.i
+
+# target to preprocess a source file
+gradient_field.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gradient_field.cpp.i
+.PHONY : gradient_field.cpp.i
+
+gradient_field.s: gradient_field.cpp.s
+.PHONY : gradient_field.s
+
+# target to generate assembly for a file
+gradient_field.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gradient_field.cpp.s
+.PHONY : gradient_field.cpp.s
+
 light.o: light.cpp.o
 .PHONY : light.o
 
@@ -387,6 +435,12 @@ help:
 	@echo "... glad.o"
 	@echo "... glad.i"
 	@echo "... glad.s"
+	@echo "... gradient.o"
+	@echo "... gradient.i"
+	@echo "... gradient.s"
+	@echo "... gradient_field.o"
+	@echo "... gradient_field.i"
+	@echo "... gradient_field.s"
 	@echo "... light.o"
 	@echo "... light.i"
 	@echo "... light.s"

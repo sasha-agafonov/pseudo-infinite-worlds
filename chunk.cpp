@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 
 #define GRADIENTS_PER_SIDE 2.f
-#define SEED 53121
+#define SEED 53122
 
 
 chunk :: chunk(int chunk_side_length, int chunk_start_x, int chunk_start_y) {

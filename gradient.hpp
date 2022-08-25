@@ -9,8 +9,7 @@ class gradient {
     public:
 
         gradient(int x, int y);
-        // void reload(int x, int y);
-        // void reload(int x, int y, int px, int py)
+        void reload(int x, int y);
         glm :: vec2 component;
         glm :: ivec2 position;
 

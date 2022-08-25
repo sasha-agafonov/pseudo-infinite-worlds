@@ -7,7 +7,7 @@
 #include <array>
 #include <iterator>
 #include "chunk.hpp"
-#include "gradient.hpp"
+#include "gradient_field.hpp"
 
 class terrain {
 
@@ -28,7 +28,7 @@ class terrain {
         int chunk_selector_x;
         int chunk_selector_y;
 
-        std :: vector <std :: vector <gradient>> gradients;
+        std :: vector <gradient_field> gradient_fields;
         std :: vector <std :: vector <chunk>> chunks;
 
 
