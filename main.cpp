@@ -26,7 +26,7 @@ void GLAPIENTRY MessageCallback(GLenum source,
                                 GLsizei length,
                                 const GLchar* message,
                                 const void* userParam) {
-                                    
+
   fprintf( stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
            ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
             type, severity, message );
@@ -65,9 +65,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     }
 
     // movement mode
-    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS && extern_movement_mode == AUTO_FORWARD) extern_movement_mode = FULL_STOP;
-    else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS && extern_movement_mode == FULL_STOP) extern_movement_mode = AUTO_BACKWARDS;
-    else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS && extern_movement_mode == AUTO_BACKWARDS) extern_movement_mode = AUTO_FORWARD;
+    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS && extern_movement_mode == AUTO_BACKWARDS) extern_movement_mode = FULL_STOP;
+    else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS && extern_movement_mode == FULL_STOP) extern_movement_mode = AUTO_FORWARD;
+    else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS && extern_movement_mode == AUTO_FORWARD) extern_movement_mode = AUTO_BACKWARDS;
 
     // anti-aliasing
     if (key == GLFW_KEY_R && action == GLFW_PRESS && extern_anti_aliasing == OFF) {

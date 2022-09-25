@@ -21,6 +21,9 @@ class terrain {
         void update_scene(glm :: ivec2 position_change);
         void draw();
 
+        float get_terrain_height(int pos_x, int pos_y);
+        float perlin_noise(int pos_x, int pos_y);
+
         int num_chunks;
         int chunks_x;
         int chunks_y;
@@ -30,7 +33,6 @@ class terrain {
 
         std :: vector <gradient_field> gradient_fields;
         std :: vector <std :: vector <chunk>> chunks;
-
 
 };
 

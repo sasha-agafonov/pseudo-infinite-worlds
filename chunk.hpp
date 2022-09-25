@@ -1,8 +1,10 @@
 #ifndef CHUNK_HPP
-#define CHUNK_CPP
+#define CHUNK_HPP
 
 #include <vector>
 #include <glm/ext.hpp>
+
+class terrain;
 
 class chunk {
 
@@ -22,9 +24,10 @@ class chunk {
         float perlin_noise(float position_x, float position_y);
         float smoothstep(float vec_1, float vec_2, float weight);
 
-
         int vertices_per_side;
         unsigned int vao, vbo, ebo;
+        terrain *polite_terrain;
+
         glm :: vec2 chunk_start;
         std :: vector <float> vertices;
         std :: vector <unsigned int> indices;

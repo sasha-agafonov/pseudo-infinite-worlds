@@ -9,9 +9,9 @@
 #include <glm/ext.hpp>
 #include <iterator>
 
-#define CHUNKS_X 32
-#define CHUNKS_Y 32
-#define CHUNK_SIDE_LENGTH 32
+#define CHUNKS_X 14
+#define CHUNKS_Y 14
+#define CHUNK_SIDE_LENGTH 64
 
 // 5 5 50
 
@@ -47,6 +47,7 @@ void renderer :: setup_camera() {
 void renderer :: setup_terrain() {
 
     polite_terrain = new terrain(glm :: ivec3(CHUNKS_X, CHUNKS_Y, CHUNK_SIDE_LENGTH), glm :: vec3 (0.f, 0.f ,0.f));
+    for (auto& row : polite_terrain -> chunks) for (auto& chunk : row) chunk.polite_terrain = polite_terrain;
 
 }
 

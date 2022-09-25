@@ -1,5 +1,6 @@
 #define GL_GLEXT_PROTOTYPES
 #include "chunk.hpp"
+#include "terrain.hpp"
 #include <iostream>
 #include <GLFW/glfw3.h>
 
@@ -21,9 +22,8 @@ void chunk :: build_vertices(int chunk_start_x, int chunk_start_y) {
 
     this -> chunk_start.x = chunk_start_x;
     this -> chunk_start.y = chunk_start_y;
-
+    float tp  = 0 ;
     build_gradients(chunk_start.x, chunk_start.y);
-    //std :: cout << "vertces: " << std ::endl;
 
     float aligner = (float)(GRADIENTS_PER_SIDE - 1) / (float)(vertices_per_side - 1);
 
@@ -33,6 +33,7 @@ void chunk :: build_vertices(int chunk_start_x, int chunk_start_y) {
 
             // right-handed from now on
             vertices.push_back(vertex_y);
+            //tp = polite_terrain -> some_meth();
             vertices.push_back(12 *  perlin_noise(vertex_y * aligner, vertex_x * aligner));
             vertices.push_back(vertex_x);
 
@@ -40,7 +41,6 @@ void chunk :: build_vertices(int chunk_start_x, int chunk_start_y) {
             vertices.push_back(1.f);
             vertices.push_back(0.f);
         }
-
     }
 }
 

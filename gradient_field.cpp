@@ -18,33 +18,27 @@ void gradient_field :: initialise_gradients() {
 
     int pos_x = 0;
     int pos_y = 0;
+    int field_len = chunks_in_row * chunk_side_length + 2 * frequency;
 
-    while (pos_y <= chunks_in_row * chunk_side_length) {
+    while (pos_y < field_len) {
 
         std :: vector <gradient> gradient_row;
 
-        while (pos_x <= chunks_in_row * chunk_side_length) {
+        while (pos_x <= field_len) {
+
             gradient_row.emplace_back(pos_y + start_y, pos_x + start_x);
             pos_x += frequency;
         }
 
         gradients.push_back(gradient_row);
         pos_y += frequency;
+        pos_x = 0;
     }
-
-    // 
-    // for (int i =0; i < gradients[0].size(); i++) {
-    //     for (int k = 0; k < gradients[0].size(); k++) {
-    //
-    //         std :: cout << gradients[i][k].position.x << " ";
-    //         std :: cout << gradients[i][k].position.y << std :: endl;
-    //     }
-    // }
 }
 
 
-
 void gradient_field :: shift_up() {
+    //for (auto& row : gradients) for (auto& gradient : gradients) gradient.reload();
 
 }
 

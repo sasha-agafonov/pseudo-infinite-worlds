@@ -5,7 +5,8 @@
 #include <iostream>
 #include <iterator>
 
-#define GRADIENTS_PER_SIDE 4
+// gradient grid size
+#define GRADIENTS_PER_SIDE 2
 
 // shortest distance between consequtive gradients
 #define GRADIENT_OFFSET 12
@@ -34,11 +35,11 @@ terrain :: terrain(glm :: ivec3 chunk_parameters, glm :: vec3 observer_position)
 void terrain :: initialise_chunks() {
 
     for (auto i = 0; i < chunks_y; i++) {
-        std :: vector <chunk> chunk_row;
-        for (auto k = 0; k < chunks_x; k++) {
-            chunk_row.emplace_back(chunk_side_length, chunk_side_length * i, chunk_side_length * k);
 
-        }
+        std :: vector <chunk> chunk_row;
+
+        for (auto k = 0; k < chunks_x; k++) chunk_row.emplace_back(chunk_side_length, chunk_side_length * i, chunk_side_length * k);
+
         chunks.push_back(chunk_row);
     }
 
@@ -49,9 +50,11 @@ void terrain :: initialise_chunks() {
 
 
 void terrain :: initialise_gradients() {
-    for (int i = 0; i < 3; i++) {
-            gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 2, 1.f);
-        }
+
+    gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 1, 0.1f);
+    gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 10, 0.2f);
+    gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 100, 1.f);
+
 }
 
 // void terrain :: initialise_gradients() {
@@ -125,10 +128,15 @@ void terrain :: update_scene(glm :: ivec2 position_change) {
 }
 
 
+float terrain :: get_terrain_height(int pos_x, int pos_y) {
+    float terrain_height = 0;
+    //for (auto gradient_field : gradient_fields)
+    return terrain_height;
+}
+
+
 
 
 void terrain :: draw() {
-
-    for (auto& row : chunks) for (auto& chunk : row) chunk.draw();
-
+    for (auto row : chunks) for (auto chunk : row) chunk.draw();
 }
