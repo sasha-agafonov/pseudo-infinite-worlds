@@ -65,7 +65,7 @@ void camera :: process_position() {
         discrete_position.x += discrete_direction.x;
         discrete_position.z += discrete_direction.y;
 
-        polite_terrain -> update_scene(glm :: ivec2(discrete_direction.y, discrete_direction.x));
+        polite_terrain -> update_scene(glm :: ivec2(discrete_direction.x, discrete_direction.y));
     }
 
 }

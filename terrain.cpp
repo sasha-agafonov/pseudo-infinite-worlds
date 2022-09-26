@@ -18,8 +18,9 @@ terrain :: terrain(glm :: ivec3 chunk_parameters, glm :: vec3 observer_position)
     this -> chunks_y = chunk_parameters.y;
     this -> num_chunks = this -> chunks_x * this -> chunks_y;
 
-    initialise_chunks();
     initialise_gradients();
+    initialise_chunks();
+
 
 }
 
@@ -38,7 +39,7 @@ void terrain :: initialise_chunks() {
 
         std :: vector <chunk> chunk_row;
 
-        for (auto k = 0; k < chunks_x; k++) chunk_row.emplace_back(chunk_side_length, chunk_side_length * i, chunk_side_length * k);
+        for (auto k = 0; k < chunks_x; k++) chunk_row.emplace_back(chunk_side_length, chunk_side_length * i, chunk_side_length * k, this);
 
         chunks.push_back(chunk_row);
     }
@@ -51,9 +52,10 @@ void terrain :: initialise_chunks() {
 
 void terrain :: initialise_gradients() {
 
-    gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 1, 0.1f);
-    gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 10, 0.2f);
-    gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 100, 1.f);
+
+    gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 1, 44.f);
+    gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 4, 4.f);
+    gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 2, 1.f);
 
 }
 
@@ -91,46 +93,45 @@ void terrain :: initialise_gradients() {
 
 void terrain :: update_scene(glm :: ivec2 position_change) {
 
-    if (position_change.x < 0) {
+//    std :: cout << "pos ch x: " << position_change.x << "pos ch y: " << position_change.y << std :: endl;
 
-        for (auto& chunk : chunks[chunk_selector_y]) chunk.update_vertices(position_change.x * chunks_y, 0);
+    //std :: cout << "chunk x pos: " << chunks[chunk_selector_x][chunk_selector_y].chunk_start.x << " pos Y: " << chunks[chunk_selector_x][chunk_selector_y].chunk_start.y << std ::endl;
+
+
+    // forward
+    if (position_change.y < 0) {
+    //    std :: cout << "fw" << std :: endl;
+        for (auto& chunk : chunks[chunk_selector_y]) chunk.update_vertices(position_change.y * chunks_y, 0);
         (chunk_selector_y == 0) ? chunk_selector_y = chunks_y - 1 : chunk_selector_y--;
-        // if (chunk_selector_y == 0) chunk_selector_y = chunks_y - 1;
-        // else chunk_selector_y--;
+    }
+
+    // backwards
+    if (position_change.y > 0) {
+    //    std :: cout << "bw" << std :: endl;
+        for (auto& chunk : chunks[chunk_selector_y]) chunk.update_vertices(position_change.y * chunks_y, 0);
+        (chunk_selector_y == chunks_y - 1) ? chunk_selector_y = 0 : chunk_selector_y++;
     }
 
     if (position_change.x > 0) {
-        for (auto& chunk : chunks[chunk_selector_y]) chunk.update_vertices(position_change.x * chunks_y, 0);
-        (chunk_selector_y == chunks_y - 1) ? chunk_selector_y = 0 : chunk_selector_y++;
-
-        // if (chunk_selector_y == chunks_y - 1) chunk_selector_y = 0;
-        // else chunk_selector_y++;
-    }
-
-
-    // for (auto& row : chunks) for (auto& chunk : row) chunk.update_vertices(position_change.x, 0);
-
-        // std :: rotate(chunks.rbegin(), std :: prev(chunks.rend()), chunks.rend());
-        // for (auto& chunk : chunks[0]) chunk.update_vertices(position_change.x, 0);
-
-
-    if (position_change.y > 0) {
+        std :: cout << "lt" << std :: endl;
         for (auto& row : chunks) std :: rotate(chunks.begin(), std :: next(chunks.begin()), chunks.end());
-        for (auto& row : chunks) for (auto& chunk : row) chunk.update_vertices(0, position_change.y);
+        for (auto& row : chunks) for (auto& chunk : row) chunk.update_vertices(0, position_change.x);
     }
 
-    if (position_change.y < 0) {
+    if (position_change.x < 0) {
+        std :: cout << "rt" << std :: endl;
         for (auto& row : chunks) std :: rotate(chunks.rbegin(), std :: next(chunks.rbegin()), chunks.rend());
-        for (auto& row : chunks) for (auto& chunk : row) chunk.update_vertices(0, position_change.y);
+        for (auto& row : chunks) for (auto& chunk : row) chunk.update_vertices(0, position_change.x);
     }
-        //    std :: cout << "pos cha x: "<< position_change.x << "pos cha y " << position_change.y << std ::endl;
-
 }
 
 
 float terrain :: get_terrain_height(int pos_x, int pos_y) {
+
     float terrain_height = 0;
-    //for (auto gradient_field : gradient_fields)
+
+    for (auto& gradient_field : gradient_fields) terrain_height += gradient_field.get_height(pos_x, pos_y);
+
     return terrain_height;
 }
 

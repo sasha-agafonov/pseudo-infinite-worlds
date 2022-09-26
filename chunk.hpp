@@ -10,7 +10,7 @@ class chunk {
 
     public:
 
-        chunk(int chunk_side_length, int chunk_start_x, int chunk_start_y);
+        chunk(int chunk_side_length, int chunk_start_x, int chunk_start_y, terrain* polite_terrain);
 
         void update_vertices(int chunk_start_x, int chunk_start_y);
         void build_vertices(int chunk_start_x, int chunk_start_y);

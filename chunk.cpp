@@ -8,9 +8,10 @@
 #define SEED 53122
 
 
-chunk :: chunk(int chunk_side_length, int chunk_start_x, int chunk_start_y) {
+chunk :: chunk(int chunk_side_length, int chunk_start_x, int chunk_start_y, terrain* polite_terrain) {
 
     this -> vertices_per_side = chunk_side_length + 1;
+    this -> polite_terrain = polite_terrain;
 
     build_vertices(chunk_start_x, chunk_start_y);
     build_indices();
@@ -22,7 +23,9 @@ void chunk :: build_vertices(int chunk_start_x, int chunk_start_y) {
 
     this -> chunk_start.x = chunk_start_x;
     this -> chunk_start.y = chunk_start_y;
+
     float tp  = 0 ;
+
     build_gradients(chunk_start.x, chunk_start.y);
 
     float aligner = (float)(GRADIENTS_PER_SIDE - 1) / (float)(vertices_per_side - 1);
@@ -34,7 +37,11 @@ void chunk :: build_vertices(int chunk_start_x, int chunk_start_y) {
             // right-handed from now on
             vertices.push_back(vertex_y);
             //tp = polite_terrain -> some_meth();
-            vertices.push_back(12 *  perlin_noise(vertex_y * aligner, vertex_x * aligner));
+            //vertices.push_back(12 *  perlin_noise(vertex_y * aligner, vertex_x * aligner));
+
+
+            vertices.push_back(polite_terrain -> get_terrain_height(vertex_y, vertex_x));
+            //vertices.push_back(0.f);
             vertices.push_back(vertex_x);
 
             vertices.push_back(0.f);
