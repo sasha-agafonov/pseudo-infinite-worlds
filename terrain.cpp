@@ -18,20 +18,11 @@ terrain :: terrain(glm :: ivec3 chunk_parameters, glm :: vec3 observer_position)
     this -> chunks_y = chunk_parameters.y;
     this -> num_chunks = this -> chunks_x * this -> chunks_y;
 
-    initialise_gradients();
+    initialise_gradient_fields();
     initialise_chunks();
-
 
 }
 
-// void terrain :: initialise_chunk_layout(int chunks_x, int chunks_y) {
-//
-//     for (int i = 0; i < chunks_x; i++) {
-//         std :: vector <glm :: ivec2> layout_row;
-//         for (int k = 0; k < chunks_y; k++) layout_row.push_back(glm :: ivec2(i * chunk_side_length, k * chunk_side_length));
-//         chunk_layout.push_back(layout_row);
-//     }
-// }
 
 void terrain :: initialise_chunks() {
 
@@ -50,45 +41,14 @@ void terrain :: initialise_chunks() {
 }
 
 
-void terrain :: initialise_gradients() {
-
-
-    gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 1, 44.f);
-    gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 4, 4.f);
-    gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 2, 1.f);
+void terrain :: initialise_gradient_fields()
+{
+    gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 800, 55.f);
+    gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 77, 22.f);
+    gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 120, 31.f);
+    gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 5, 1.f);
 
 }
-
-// void terrain :: initialise_gradients() {
-//
-//     int totall = chunks_x * chunk_side_length;
-//
-//
-//     for (auto i = 0; i < chunks_y * chunk_side_length; i++) {
-//         std :: vector <gradient> gradient_row;
-//         for (auto k = 0; k < GRADIENTS_PER_SIDE; k++) {
-//             gradient_row.emplace_back();
-//         }
-//     }
-// }
-
-
-// void terrain :: initialise_gradients(int chunks_x, int chunks_x) {
-//
-//     for (int i = 0; i < chunk_side_length * sqrt(num_chunks); i += GRADIENT_OFFSET) {
-//
-//         std :: vector <gradient> gradient_row;
-//
-//         for (int k = 0; k < chunk_side_length * sqrt(num_chunks); k += GRADIENT_OFFSET) {
-//
-//             gradient_row.emplace_back(i, k);
-//
-//         }
-//
-//         gradients.push_back(gradient_row);
-//     }
-// }
-
 
 
 void terrain :: update_scene(glm :: ivec2 position_change) {
@@ -125,17 +85,31 @@ void terrain :: update_scene(glm :: ivec2 position_change) {
     }
 }
 
-
-float terrain :: get_terrain_height(int pos_x, int pos_y) {
-
+float terrain :: fractional_bm(int pos_x, int pos_y) {
     float terrain_height = 0;
-
     for (auto& gradient_field : gradient_fields) terrain_height += gradient_field.get_height(pos_x, pos_y);
-
     return terrain_height;
 }
 
 
+float terrain :: get_terrain_height(int pos_x, int pos_y) {
+    //return -fabs(fractional_bm(pos_x, pos_y));
+
+    float warp_x = fractional_bm(pos_x + 12, pos_y);
+    float warp_y = fractional_bm(pos_x, pos_y + 52);
+
+    // float fbm = fractional_bm(pos_x, pos_y);
+    // for (int i = 1; i < 10; i++) fbm = fractional_bm(pos_x + fbm, pos_y + fbm);
+
+    return pow(0.1 * fractional_bm(pos_x + 4 * warp_x, pos_y + 4 * warp_y), 2) + pow(0.1 * fractional_bm(pos_y + 4 * warp_y, pos_x + 4 * warp_x), 2);
+    //return fractional_bm(fbm * 12 + pos_x, fbm * 12 + pos_y);
+    //return fractional_bm(pos_x + fractional_bm(pos_x, pos_y), pos_y + fractional_bm(pos_x, pos_y));
+    // float terrain_height = 0;
+    //
+    // for (auto& gradient_field : gradient_fields) terrain_height += gradient_field.get_height(pos_x, pos_y);
+    // //terrain_height += gradient_fields[0].get_height(3 + pos_x, 3 + pos_y);
+    // return terrain_height; //get_terrain_height(int pos_x, int pos_y);
+}
 
 
 void terrain :: draw() {

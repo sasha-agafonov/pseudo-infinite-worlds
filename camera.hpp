@@ -27,7 +27,6 @@ class camera {
 
         int chunk_side_length;
 
-        // glm :: vec3 allowed_position_change;
         glm :: vec3 discrete_position;
 
 };

@@ -16,13 +16,13 @@ class terrain {
         terrain(glm :: ivec3 chunk_parameters, glm :: vec3 observer_position);
 
         void initialise_chunks();
-        void initialise_gradients();
-        //void initialise_chunk_layout(int chunks_x, int chunks_y);
+        void initialise_gradient_fields();
         void update_scene(glm :: ivec2 position_change);
         void draw();
 
         float get_terrain_height(int pos_x, int pos_y);
         float perlin_noise(int pos_x, int pos_y);
+        float fractional_bm(int pos_x, int pos_y);
 
         int num_chunks;
         int chunks_x;
@@ -33,6 +33,8 @@ class terrain {
 
         std :: vector <gradient_field> gradient_fields;
         std :: vector <std :: vector <chunk>> chunks;
+
+    private:
 
 };
 

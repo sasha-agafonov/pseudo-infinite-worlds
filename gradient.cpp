@@ -18,6 +18,7 @@ gradient :: gradient(int ix, int iy) {
 
 void gradient :: reload(int ix, int iy) {
 
+    position = glm :: vec2(ix, iy);
     const unsigned w = 8 * sizeof(unsigned);
     const unsigned s = w / 2;
     unsigned a = ix, b = iy;

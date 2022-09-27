@@ -125,7 +125,7 @@ int main(void) {
 
     renderer* bad_renderer = new renderer(window);
 
-    glEnable(GL_DEBUG_OUTPUT);
+    //glEnable(GL_DEBUG_OUTPUT);
     glDebugMessageCallback(MessageCallback, 0);
 
     bad_renderer -> setup_scene();

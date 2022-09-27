@@ -15,6 +15,7 @@ class gradient_field {
         void shift_left();
         void shift_right();
 
+        void print_field();
         float get_height(int pos_x, int pos_y);
         float perlin_noise(float point_x, float point_y);
         float smoothstep(float vec_1, float vec_2, float weight);
@@ -32,11 +33,14 @@ class gradient_field {
 
         void initialise_gradients();
 
-        int field_side_length;
-        int start_x;
-        int start_y;
-        int chunks_in_row;
-        int chunk_side_length;
+        int field_start_x;
+        int field_start_y;
+
+        int chunk_side_len;
+        int field_side_len;
+        int chunks_per_row;
+        int gradients_per_side;
+
         int frequency;
         float amplitude;
 };

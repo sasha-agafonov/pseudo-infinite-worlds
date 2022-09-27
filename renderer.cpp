@@ -35,8 +35,8 @@ void renderer :: setup_scene() {
 
 void renderer :: setup_camera() {
 
-    glm :: vec3 look_from((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 20.f, (CHUNKS_Y ) * (CHUNK_SIDE_LENGTH / 2.f));
-    glm :: vec3 look_at((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 20.f, 0.f);
+    glm :: vec3 look_from((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 50.f, (CHUNKS_Y ) * (CHUNK_SIDE_LENGTH / 2.f));
+    glm :: vec3 look_at((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 50.f, 0.f);
     glm :: vec3 look_up(0.f, 1.f, 0.f);
     happy_camera = new camera(look_from, look_at, look_up, CHUNK_SIDE_LENGTH);
     happy_camera -> polite_terrain = polite_terrain;
@@ -47,7 +47,7 @@ void renderer :: setup_camera() {
 void renderer :: setup_terrain() {
 
     polite_terrain = new terrain(glm :: ivec3(CHUNKS_X, CHUNKS_Y, CHUNK_SIDE_LENGTH), glm :: vec3 (0.f, 0.f ,0.f));
-    for (auto& row : polite_terrain -> chunks) for (auto& chunk : row) chunk.polite_terrain = polite_terrain;
+    //for (auto& row : polite_terrain -> chunks) for (auto& chunk : row) chunk.polite_terrain = polite_terrain;
 
 }
 
