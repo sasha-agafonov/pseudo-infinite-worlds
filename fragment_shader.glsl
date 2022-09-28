@@ -20,9 +20,11 @@ uniform vec3 observer;
 
 vec3 interpolate_height_colour(vec3 pos) {
 
-    float color_1 = (0.725 - 0.367) * pos.y / (5) + 0.367;
-    float color_2 = (0.662 - 0.552) * pos.y / (5) + 0.552;
-    float color_3 = (0.592 - 0.381) * pos.y / (5) + 0.381;
+    //1.00, 0.960, 0.660
+
+    float color_1 = (1.f - 0.367) * pos.y / (5) + 0.367;
+    float color_2 = (0.960 - 0.552) * pos.y / (5) + 0.552;
+    float color_3 = (0.80 - 0.381) * pos.y / (5) + 0.381;
 
     return vec3(color_1, color_2, color_3);
 }
@@ -49,7 +51,7 @@ void main() {
     float spec = pow(max(dot(view_direction, reflect_direction), 0.0), 1.f);
     vec3 nspecular = specular * spec;
 
-    float fogval = lin_fog(length(view_position - fragment_position), 300.f, 400.f);
+    float fogval = lin_fog(length(view_position - fragment_position), 300.f, 1000.f);
 
     // float mx = clear_colour.x;
     //

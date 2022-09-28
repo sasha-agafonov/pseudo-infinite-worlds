@@ -16,6 +16,8 @@ class gradient_field {
         void shift_right();
 
         void print_field();
+        void warp_field();
+        
         float get_height(int pos_x, int pos_y);
         float perlin_noise(float point_x, float point_y);
         float smoothstep(float vec_1, float vec_2, float weight);

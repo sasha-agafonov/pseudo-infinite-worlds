@@ -108,3 +108,8 @@ void sun :: set_buffers() {
     glBindVertexArray(0);
 
 }
+
+
+// void sun :: transalate(vec3 translation) {
+//     for (auto& vex : sun_vertices) vex = vex +
+// }

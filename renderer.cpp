@@ -9,8 +9,8 @@
 #include <glm/ext.hpp>
 #include <iterator>
 
-#define CHUNKS_X 14
-#define CHUNKS_Y 14
+#define CHUNKS_X 32
+#define CHUNKS_Y 32
 #define CHUNK_SIDE_LENGTH 64
 
 // 5 5 50
@@ -57,7 +57,7 @@ void renderer :: setup_states() {
     glDisable(GL_DEBUG_OUTPUT);
     glEnable(GL_MULTISAMPLE);
     glEnable(GL_DEPTH_TEST);
-    glClearColor(0.6f, 0.8f, 0.8f, 1.f);
+    glClearColor(0.990f, 0.634f, 0.634f, 1.f);
 
 }
 
@@ -115,7 +115,7 @@ void renderer :: render_scene() {
     glm :: vec3 specular(0.6f, 0.6f, 0.6f);
     glm :: vec3 direction(2.f, -1.f, 20.f);
 
-    glm :: vec3 clear_colour(0.6f, 0.8f, 0.8f);
+    glm :: vec3 clear_colour(0.990f, 0.634f, 0.634f);
 
 
     glUniform3fv(uniform_light_dir, 1, glm :: value_ptr(glm :: vec3(1.f, -1.f, 1.f)));
@@ -141,7 +141,7 @@ void renderer :: render_scene() {
 
         glm :: vec3 view_position = happy_camera -> look_from;
 
-        float current_time = glfwGetTime() * 42;
+        float current_time = glfwGetTime() * 34;
         //model_mx = glm :: rotate(model_mx, current_time * glm :: radians(50.0f), glm :: vec3(0.f, 1.f, 0.f));
 
         if (extern_movement_mode == AUTO_FORWARD) view_mx = happy_camera -> auto_move_forward(current_time);
@@ -157,7 +157,7 @@ void renderer :: render_scene() {
         happy_shader -> use_program();
 
         projection_mx = glm :: mat4(1.f);
-        projection_mx = glm :: perspective(glm :: radians(45.f), (float)extern_width / (float)extern_height, 0.1f, 800.f);
+        projection_mx = glm :: perspective(glm :: radians(45.f), (float)extern_width / (float)extern_height, 0.1f, 1200.f);
 
         // glm :: vec3 sun_position = glm ::vec3(0.f, 0.f, -22.f);
         glm :: vec3 sun_position = view_position;
@@ -178,6 +178,7 @@ void renderer :: render_scene() {
 
         model_mx = glm :: mat4(1.f);
         model_mx = glm :: translate(model_mx, sun_position);
+
         glUniformMatrix4fv(uniform_model_light, 1, GL_FALSE, glm :: value_ptr(model_mx));
         glUniformMatrix4fv(uniform_view_light, 1, GL_FALSE, glm :: value_ptr(view_mx));
         glUniformMatrix4fv(uniform_projection_light, 1, GL_FALSE, glm :: value_ptr(projection_mx));

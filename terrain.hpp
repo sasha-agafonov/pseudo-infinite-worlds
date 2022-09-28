@@ -31,6 +31,9 @@ class terrain {
         int chunk_selector_x;
         int chunk_selector_y;
 
+        float get_max_height();
+        float get_min_height();
+
         std :: vector <gradient_field> gradient_fields;
         std :: vector <std :: vector <chunk>> chunks;
 

@@ -11,8 +11,19 @@ gradient_field :: gradient_field(int start_x, int start_y, int chunks_in_row, in
     this -> amplitude = amplitude;
 
     initialise_gradients();
+    warp_field();
     //print_field();
 }
+
+
+void gradient_field :: warp_field() {
+    int fsize = gradients.size();
+    for (int i = 0; i < gradients.size(); i++) {
+        gradients[fsize - 1][i] = gradients[0][i];
+        gradients[i][fsize - 1] = gradients[i][0];
+    }
+}
+
 
 // rwrtdis
 void gradient_field :: initialise_gradients() {

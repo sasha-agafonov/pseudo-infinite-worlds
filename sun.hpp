@@ -20,6 +20,7 @@ class sun : public light {
         void build_vertices();
         void build_indices();
         void set_buffers();
+        //void translate(vec3 translation);
 
         int number_vertices;
         unsigned int vao, vbo, ebo;
