@@ -105,6 +105,8 @@ void chunk :: set_buffers() {
 
 void chunk :: draw() {
     glBindVertexArray(vao);
+
+    
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 }
 

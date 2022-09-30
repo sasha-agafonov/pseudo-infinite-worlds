@@ -12,14 +12,14 @@ public:
 
     renderer(GLFWwindow* window);
 
-    void setup_camera();
-    void setup_lights();
-    void setup_terrain();
-    void setup_shaders();
-    void setup_states();
-    void setup_scene();
-    void setup_static_uniforms();
-    void setup_dynamic_uniforms();
+    void set_camera();
+    void set_lights();
+    void set_terrain();
+    void set_shaders();
+    void set_states();
+    void set_scene();
+    void set_static_uniforms();
+    void set_dynamic_uniforms();
 
 
     void render_scene();

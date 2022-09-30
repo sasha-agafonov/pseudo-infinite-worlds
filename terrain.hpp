@@ -1,22 +1,24 @@
 #ifndef TERRAIN_HPP
 #define TERRAIN_HPP
-#define CHUNKS 1
+
+#include <GL/gl.h>
 
 #include <vector>
 #include <list>
 #include <array>
 #include <iterator>
+
 #include "chunk.hpp"
 #include "gradient_field.hpp"
+
 
 class terrain {
 
     public:
 
         terrain(glm :: ivec3 chunk_parameters, glm :: vec3 observer_position);
+        terrain(int terrain_side_chunks, int chunk_side_vertices, glm :: vec3 camera_position);
 
-        void initialise_chunks();
-        void initialise_gradient_fields();
         void update_scene(glm :: ivec2 position_change);
         void draw();
 
@@ -28,16 +30,30 @@ class terrain {
         int chunks_x;
         int chunks_y;
         int chunk_side_length;
+
+
+        int terrain_side_chunks;
+        int chunk_side_vertices;
         int chunk_selector_x;
         int chunk_selector_y;
+        int det_levels;
+
+        GLuint vertex_array;
+        std :: vector <GLuint> element_ids;
+
+        //std :: vector <std :: vector <std ::vector>>> element_buffers;
+        std :: vector <gradient_field> gradient_fields;
+        std :: vector <std :: vector <chunk>> chunks;
 
         float get_max_height();
         float get_min_height();
 
-        std :: vector <gradient_field> gradient_fields;
-        std :: vector <std :: vector <chunk>> chunks;
-
     private:
+
+        void build_chunks();
+        void build_gradient_fields();
+        void build_indices();
+        void set_buffers();
 
 };
 

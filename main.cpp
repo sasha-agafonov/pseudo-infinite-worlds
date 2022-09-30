@@ -19,6 +19,7 @@ int extern_transformation = ROTATE;
 int extern_cull_face = FRONT;
 
 
+// GL error callback
 void GLAPIENTRY MessageCallback(GLenum source,
                                 GLenum type,
                                 GLuint id,
@@ -27,26 +28,28 @@ void GLAPIENTRY MessageCallback(GLenum source,
                                 const GLchar* message,
                                 const void* userParam) {
 
-  fprintf( stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
-           ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
-            type, severity, message );
+    fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+           (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type, severity, message);
+
+}
+
+
+// GLFW error callback
+void error_callback(int error, const char* description) {
+    std :: cerr << "error callback!" << std :: endl;
 }
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 
     glViewport(0, 0, width, height);
-
     extern_width = width;
     extern_height = height;
 
-    std :: cout << "framebuffer callback!" << std :: endl;
 }
 
 
-void error_callback(int error, const char* description) {
-    std :: cerr << "error callback!" << std :: endl;
-}
+
 
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
@@ -113,7 +116,7 @@ int main(void) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
     glfwWindowHint(GLFW_SAMPLES, 4);
 
-    window = glfwCreateWindow(640, 480, "ihatewindowssomuch", NULL, NULL);
+    window = glfwCreateWindow(640, 480, "bad_window", NULL, NULL);
     if (!window) exit(EXIT_FAILURE);
 
     glfwSetKeyCallback(window, key_callback);
@@ -125,10 +128,11 @@ int main(void) {
 
     renderer* bad_renderer = new renderer(window);
 
-    //glEnable(GL_DEBUG_OUTPUT);
+    // disable debugging for performance
+    glEnable(GL_DEBUG_OUTPUT);
     glDebugMessageCallback(MessageCallback, 0);
 
-    bad_renderer -> setup_scene();
+    bad_renderer -> set_scene();
     bad_renderer -> render_scene();
 
     glfwDestroyWindow(window);

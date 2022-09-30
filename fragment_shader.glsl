@@ -21,10 +21,11 @@ uniform vec3 observer;
 vec3 interpolate_height_colour(vec3 pos) {
 
     //1.00, 0.960, 0.660
+    //0.468, 0.667, 0.780
 
-    float color_1 = (1.f - 0.367) * pos.y / (5) + 0.367;
-    float color_2 = (0.960 - 0.552) * pos.y / (5) + 0.552;
-    float color_3 = (0.80 - 0.381) * pos.y / (5) + 0.381;
+    float color_1 = (1.f - 0.468) * pos.y / (5) + 0.468;
+    float color_2 = (0.960 - 0.667) * pos.y / (5) + 0.667;
+    float color_3 = (0.80 - 0.78) * pos.y / (5) + 0.78;
 
     return vec3(color_1, color_2, color_3);
 }

@@ -11,7 +11,7 @@
 
 #define CHUNKS_X 32
 #define CHUNKS_Y 32
-#define CHUNK_SIDE_LENGTH 64
+#define CHUNK_SIDE_LENGTH 16
 
 // 5 5 50
 
@@ -21,19 +21,19 @@ renderer :: renderer(GLFWwindow* window) {
 }
 
 
-void renderer :: setup_scene() {
+void renderer :: set_scene() {
 
-    setup_shaders();
-    setup_terrain();
-    setup_camera();
-    setup_lights();
-    setup_states();
+    set_shaders();
+    set_terrain();
+    set_camera();
+    set_lights();
+    set_states();
 
 }
 
 
 
-void renderer :: setup_camera() {
+void renderer :: set_camera() {
 
     glm :: vec3 look_from((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 50.f, (CHUNKS_Y ) * (CHUNK_SIDE_LENGTH / 2.f));
     glm :: vec3 look_at((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 50.f, 0.f);
@@ -44,7 +44,7 @@ void renderer :: setup_camera() {
 }
 
 
-void renderer :: setup_terrain() {
+void renderer :: set_terrain() {
 
     polite_terrain = new terrain(glm :: ivec3(CHUNKS_X, CHUNKS_Y, CHUNK_SIDE_LENGTH), glm :: vec3 (0.f, 0.f ,0.f));
     //for (auto& row : polite_terrain -> chunks) for (auto& chunk : row) chunk.polite_terrain = polite_terrain;
@@ -52,7 +52,7 @@ void renderer :: setup_terrain() {
 }
 
 
-void renderer :: setup_states() {
+void renderer :: set_states() {
 
     glDisable(GL_DEBUG_OUTPUT);
     glEnable(GL_MULTISAMPLE);
@@ -62,7 +62,7 @@ void renderer :: setup_states() {
 }
 
 
-void renderer :: setup_lights() {
+void renderer :: set_lights() {
 
     glm :: vec3 sun_position = happy_camera -> look_from + glm :: vec3(48.f, 32.f, 128.f);
 
@@ -74,7 +74,7 @@ void renderer :: setup_lights() {
 }
 
 
-void renderer :: setup_shaders() {
+void renderer :: set_shaders() {
 
     happy_shader = new shader("./vertex_shader.glsl", "./geometry_shader.glsl", "./fragment_shader.glsl");
     light_shader = new shader("./light_vertex_shader.glsl", "./light_fragment_shader.glsl");

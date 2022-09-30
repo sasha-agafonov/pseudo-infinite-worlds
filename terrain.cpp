@@ -4,12 +4,7 @@
 #include <algorithm>
 #include <iostream>
 #include <iterator>
-
-// gradient grid size
-#define GRADIENTS_PER_SIDE 2
-
-// shortest distance between consequtive gradients
-#define GRADIENT_OFFSET 12
+#include <cmath>
 
 terrain :: terrain(glm :: ivec3 chunk_parameters, glm :: vec3 observer_position) {
 
@@ -17,21 +12,75 @@ terrain :: terrain(glm :: ivec3 chunk_parameters, glm :: vec3 observer_position)
     this -> chunks_x = chunk_parameters.x;
     this -> chunks_y = chunk_parameters.y;
     this -> num_chunks = this -> chunks_x * this -> chunks_y;
+    this -> terrain_side_chunks = chunk_parameters.x;
+    this -> chunk_side_vertices = chunk_parameters.z + 1;
 
-    initialise_gradient_fields();
-    initialise_chunks();
+    build_gradient_fields();
+    build_chunks();
+    // build_elements();
 
 }
 
 
-void terrain :: initialise_chunks() {
+terrain :: terrain(int terrain_side_chunks, int chunk_side_vertices, glm :: vec3 camera_pos) {
 
-    for (auto i = 0; i < chunks_y; i++) {
+    int chunk_len = chunk_side_vertices - 1;
 
+    // check for correct chunk size
+    if (chunk_len <= 0 || (chunk_len & (chunk_len - 1)) != 0) {
+        std :: cerr << "Error: a chunk must have 2^n + 1 vertices per side (with a minimum of 2)." <<
+        std :: endl << "However, you specified " <<  chunk_side_vertices  << " vertices per side." <<
+        std :: endl;
+        exit(1);
+    }
+
+    this -> terrain_side_chunks = terrain_side_chunks;
+    this -> chunk_side_vertices = chunk_side_vertices;
+
+    // there has to be at least one LOD
+    this -> det_levels = 1;
+
+    // but it is better to have several
+    while (chunk_len >>= 1) ++det_levels;
+
+    build_gradient_fields();
+    build_chunks();
+
+    //set_buffers();
+
+}
+
+// void terrain :: build_elements() {
+//
+//     glGenVertexArrays(1, &vertex_array);
+//     glGenBuffers(det_levels, element_buffers.data());
+// }
+//
+//
+// void terrain :: build_indices() {
+//
+//     for (int index_y = 0; index_y < vertices_per_side - 1; index_y++) {
+//
+//         for (int index_x = 0; index_x < vertices_per_side - 1; index_x++) {
+//
+//             indices.push_back(index_x + (index_y) * vertices_per_side);
+//             indices.push_back(index_x + (index_y) * vertices_per_side + 1);
+//             indices.push_back(index_x + (index_y + 1) * vertices_per_side);
+//
+//             indices.push_back(index_x + (index_y) * vertices_per_side + 1);
+//             indices.push_back(index_x + (index_y + 1) * vertices_per_side + 1);
+//             indices.push_back(index_x + (index_y + 1) * vertices_per_side);
+//         }
+//     }
+//
+// }
+
+void terrain :: build_chunks() {
+
+    for (int i = 0; i < terrain_side_chunks; i++) {
         std :: vector <chunk> chunk_row;
 
-        for (auto k = 0; k < chunks_x; k++) chunk_row.emplace_back(chunk_side_length, chunk_side_length * i, chunk_side_length * k, this);
-
+        for (int k = 0; k < terrain_side_chunks; k++) chunk_row.emplace_back(chunk_side_length, chunk_side_length * i, chunk_side_length * k, this);
         chunks.push_back(chunk_row);
     }
 
@@ -41,13 +90,13 @@ void terrain :: initialise_chunks() {
 }
 
 
-void terrain :: initialise_gradient_fields()
-{
+void terrain :: build_gradient_fields() {
+
     //gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 700, 50.f);
-    gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 800, 55.f);
-    gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 77, 22.f);
-    gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 120, 31.f);
-    gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 5, 1.f);
+    gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 800, 55.f);
+    gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 77, 22.f);
+    gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 120, 31.f);
+    gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 5, 1.f);
 
 }
 
@@ -94,6 +143,7 @@ void terrain :: update_scene(glm :: ivec2 position_change) {
     }
 }
 
+
 float terrain :: fractional_bm(int pos_x, int pos_y) {
     float terrain_height = 0;
     for (auto& gradient_field : gradient_fields) terrain_height += gradient_field.get_height(pos_x, pos_y);
@@ -102,18 +152,9 @@ float terrain :: fractional_bm(int pos_x, int pos_y) {
 
 
 float terrain :: get_terrain_height(int pos_x, int pos_y) {
-
     float warp_x = fractional_bm(pos_x + 12, pos_y);
     float warp_y = fractional_bm(pos_x, pos_y + 52);
-
     return pow(0.1 * fractional_bm(pos_x + 4 * warp_x, pos_y + 4 * warp_y), 2) + pow(0.1 * fractional_bm(pos_y + 4 * warp_y, pos_x + 4 * warp_x), 2);
-    //return fractional_bm(fbm * 12 + pos_x, fbm * 12 + pos_y);
-    //return fractional_bm(pos_x + fractional_bm(pos_x, pos_y), pos_y + fractional_bm(pos_x, pos_y));
-    // float terrain_height = 0;
-    //
-    // for (auto& gradient_field : gradient_fields) terrain_height += gradient_field.get_height(pos_x, pos_y);
-    // //terrain_height += gradient_fields[0].get_height(3 + pos_x, 3 + pos_y);
-    // return terrain_height; //get_terrain_height(int pos_x, int pos_y);
 }
 
 
