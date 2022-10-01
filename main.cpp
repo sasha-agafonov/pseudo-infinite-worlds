@@ -68,9 +68,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     }
 
     // movement mode
-    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS && extern_movement_mode == AUTO_BACKWARDS) extern_movement_mode = FULL_STOP;
-    else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS && extern_movement_mode == FULL_STOP) extern_movement_mode = AUTO_FORWARD;
-    else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS && extern_movement_mode == AUTO_FORWARD) extern_movement_mode = AUTO_BACKWARDS;
+    //if (key == GLFW_KEY_SPACE && action == GLFW_PRESS && extern_movement_mode == AUTO_BACKWARDS) extern_movement_mode = FULL_STOP;
+    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS && extern_movement_mode == FULL_STOP) extern_movement_mode = AUTO_FORWARD;
+    else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS && extern_movement_mode == AUTO_FORWARD) extern_movement_mode = FULL_STOP;
 
     // anti-aliasing
     if (key == GLFW_KEY_R && action == GLFW_PRESS && extern_anti_aliasing == OFF) {

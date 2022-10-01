@@ -92,7 +92,7 @@ void terrain :: build_chunks() {
 
 void terrain :: build_gradient_fields() {
 
-    //gradient_fields.emplace_back(0, 0, chunks_x, chunk_side_length, 700, 50.f);
+    //gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 4400, 155.f);
     gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 800, 55.f);
     gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 77, 22.f);
     gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 120, 31.f);
@@ -144,14 +144,14 @@ void terrain :: update_scene(glm :: ivec2 position_change) {
 }
 
 
-float terrain :: fractional_bm(int pos_x, int pos_y) {
+float terrain :: fractional_bm(float pos_x, float pos_y) {
     float terrain_height = 0;
     for (auto& gradient_field : gradient_fields) terrain_height += gradient_field.get_height(pos_x, pos_y);
     return terrain_height;
 }
 
 
-float terrain :: get_terrain_height(int pos_x, int pos_y) {
+float terrain :: get_terrain_height(float pos_x, float pos_y) {
     float warp_x = fractional_bm(pos_x + 12, pos_y);
     float warp_y = fractional_bm(pos_x, pos_y + 52);
     return pow(0.1 * fractional_bm(pos_x + 4 * warp_x, pos_y + 4 * warp_y), 2) + pow(0.1 * fractional_bm(pos_y + 4 * warp_y, pos_x + 4 * warp_x), 2);

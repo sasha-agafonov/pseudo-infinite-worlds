@@ -22,9 +22,9 @@ class terrain {
         void update_scene(glm :: ivec2 position_change);
         void draw();
 
-        float get_terrain_height(int pos_x, int pos_y);
-        float perlin_noise(int pos_x, int pos_y);
-        float fractional_bm(int pos_x, int pos_y);
+        float get_terrain_height(float pos_x, float pos_y);
+        float perlin_noise(float pos_x, float pos_y);
+        float fractional_bm(float pos_x, float pos_y);
 
         int num_chunks;
         int chunks_x;

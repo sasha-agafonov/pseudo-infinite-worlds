@@ -1,14 +1,20 @@
 #include "camera.hpp"
 #include <iostream>
-#include <math.h>
+#include <cmath>
+#include "extern.hpp"
 
+#define STAB_RATE 0.01
 
-camera :: camera(glm :: vec3 look_from, glm :: vec3 look_at, glm :: vec3 look_up, int chunk_side_length) {
+camera :: camera(glm :: vec3 look_from, glm :: vec3 look_at, glm :: vec3 look_up, int chunk_side_length, terrain* polite_terrain) {
 
     this -> look_from = look_from;
     this -> look_at = look_at;
     this -> look_up = look_up;
     this -> chunk_side_length = chunk_side_length;
+    this -> polite_terrain = polite_terrain;
+
+    adjust_rate = 23;
+    adjust_step = 0;
 
     discrete_position = look_from;
     previous_time = 0;
@@ -44,7 +50,52 @@ glm :: mat4 camera :: auto_move_backwards(double time) {
 }
 
 
-void camera :: process_position() {
+void camera :: adjust_height() {
+
+        look_from.y = 4 + polite_terrain -> get_terrain_height(look_from.x, look_from.z);
+
+}
+
+
+// void camera :: shake() {
+//
+// }
+
+void camera :: stabilise() {
+
+    if (look_up.x <= STAB_RATE && look_up.x >= -STAB_RATE) look_up.x = 0.f;
+
+    if (look_up.x < 0.f) look_up.x += STAB_RATE;
+
+    else if (look_up.x > 0.f) look_up.x -= STAB_RATE;
+
+    else disaligned = false;
+
+}
+
+
+void camera :: shake(double time) {
+
+    if (!disaligned) disaligned = true;
+
+    // sideways
+    look_up.x = 0.015f * (std :: sin(0.2f * time));
+
+    // up/down
+    look_from.y += 0.5f * (std :: sin(0.5f * time));
+    look_at.y = look_from.y;
+
+}
+
+void camera :: process_position(double time) {
+
+    adjust_height();
+
+    if (extern_movement_mode == AUTO_FORWARD || extern_movement_mode == AUTO_BACKWARDS) shake(time);
+    else if (disaligned) stabilise();
+
+
+
 
     float allowed_position_change = float(chunk_side_length) / 2.f;
 

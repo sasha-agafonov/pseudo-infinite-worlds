@@ -89,7 +89,7 @@ void gradient_field :: print_field() {
 }
 
 
-float gradient_field :: get_height(int pos_x, int pos_y) {
+float gradient_field :: get_height(float pos_x, float pos_y) {
 
     float mapped_x = map_to_field_x(pos_x);
     float mapped_y = map_to_field_y(pos_y);
@@ -149,7 +149,7 @@ float gradient_field :: perlin_noise(float point_x, float point_y) {
 
 
 
-float gradient_field :: map_to_field_x(int point) {
+float gradient_field :: map_to_field_x(float point) {
     point = positive_mod(point, field_side_len);
     return (float)(point - field_start_x) / (float)field_side_len * (gradients_per_side - 1);
 
@@ -162,7 +162,7 @@ float gradient_field :: map_to_field_x(int point) {
 }
 
 
-float gradient_field :: map_to_field_y(int point) {
+float gradient_field :: map_to_field_y(float point) {
     point = positive_mod(point, field_side_len);
     return (float)(point - field_start_y) / (float)field_side_len * (gradients_per_side - 1);
     // int mapped_pos = positive_mod(point, field_side_length);

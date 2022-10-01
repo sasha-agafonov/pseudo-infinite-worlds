@@ -9,8 +9,8 @@
 #include <glm/ext.hpp>
 #include <iterator>
 
-#define CHUNKS_X 32
-#define CHUNKS_Y 32
+#define CHUNKS_X 48
+#define CHUNKS_Y 48
 #define CHUNK_SIDE_LENGTH 16
 
 // 5 5 50
@@ -32,24 +32,26 @@ void renderer :: set_scene() {
 }
 
 
-
-void renderer :: set_camera() {
-
-    glm :: vec3 look_from((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 50.f, (CHUNKS_Y ) * (CHUNK_SIDE_LENGTH / 2.f));
-    glm :: vec3 look_at((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 50.f, 0.f);
-    glm :: vec3 look_up(0.f, 1.f, 0.f);
-    happy_camera = new camera(look_from, look_at, look_up, CHUNK_SIDE_LENGTH);
-    happy_camera -> polite_terrain = polite_terrain;
-
-}
-
-
 void renderer :: set_terrain() {
 
     polite_terrain = new terrain(glm :: ivec3(CHUNKS_X, CHUNKS_Y, CHUNK_SIDE_LENGTH), glm :: vec3 (0.f, 0.f ,0.f));
     //for (auto& row : polite_terrain -> chunks) for (auto& chunk : row) chunk.polite_terrain = polite_terrain;
 
 }
+
+void renderer :: set_camera() {
+
+    glm :: vec3 look_from((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 50.f, (CHUNKS_Y ) * (CHUNK_SIDE_LENGTH / 2.f));
+    glm :: vec3 look_at((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 50.f, 0.f);
+    glm :: vec3 look_up(0.f, 1.f, 0.f);
+
+    happy_camera = new camera(look_from, look_at, look_up, CHUNK_SIDE_LENGTH, polite_terrain);
+    //happy_camera -> polite_terrain = polite_terrain;
+
+}
+
+
+
 
 
 void renderer :: set_states() {
@@ -149,7 +151,9 @@ void renderer :: render_scene() {
         else view_mx = happy_camera -> get_view_mx(current_time);
 
         //view_mx = glm :: translate(view_mx ,glm :: vec3(0.f, 0.f, -40.f));
-        happy_camera -> process_position();
+        //happy_camera -> adjust_height();
+        happy_camera -> process_position(current_time);
+
 
         model_mx = glm :: mat4(1.f);
         //model_mx = glm :: translate(model_mx, polite_terrain -> chunk_translation);
