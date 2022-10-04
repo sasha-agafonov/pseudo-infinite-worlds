@@ -25,11 +25,9 @@ void gradient_field :: warp_field() {
 }
 
 
-// rwrtdis
 void gradient_field :: initialise_gradients() {
 
     int terrain_len = chunks_per_row * chunk_side_len;
-    // int field_len = terrain_len /
 
     for (int pos_x = 0; pos_x <= terrain_len + frequency; pos_x += frequency) {
 
@@ -44,29 +42,7 @@ void gradient_field :: initialise_gradients() {
 
     field_side_len = gradients[0][gradients.size() - 1].position.x - gradients[0][0].position.x;
     gradients_per_side = gradients.size();
-    //
-    // if (gradients.size() < 2 || gradients[0].size() < 2) {
-    //
-    // }
 
-    // = chunks_in_row * chunk_side_length;
-
-    // while (pos_x <= chunks_in_row * chunk_side_length || side_gradients < 2) {
-    //
-    //     side_gradients++;
-    //
-    //     std :: vector <gradient> gradient_row;
-    //
-    //     while (pos_y <= chunks_in_row * chunk_side_length || side_gradients < 2) {
-    //
-    //         gradient_row.emplace_back(start_y + pos_y, start_x + pos_x);
-    //         pos_y += frequency;
-    //     }
-    //
-    //     gradients.push_back(gradient_row);
-    //     pos_x += frequency;
-    //     pos_y = 0;
-    // }
 }
 
 
@@ -94,11 +70,7 @@ float gradient_field :: get_height(float pos_x, float pos_y) {
     float mapped_x = map_to_field_x(pos_x);
     float mapped_y = map_to_field_y(pos_y);
 
-    //std :: cout << "pos_X: " <<mapped_x << " pos_y: " << mapped_y << std :: endl;
-    //std :: cout << "g field size: " << gradients.size() << " x " << gradients[0].size() << std :: endl;
-    //std :: cout << "perlin: " << amplitude * perlin_noise(mapped_x, mapped_y) << std :: endl;
     return amplitude * perlin_noise(mapped_x, mapped_y);
-    //return 0;
 }
 
 
@@ -152,25 +124,12 @@ float gradient_field :: perlin_noise(float point_x, float point_y) {
 float gradient_field :: map_to_field_x(float point) {
     point = positive_mod(point, field_side_len);
     return (float)(point - field_start_x) / (float)field_side_len * (gradients_per_side - 1);
-
-    // int mapped_pos = positive_mod(point, field_side_length);
-    // mapped_pos /= field_side_length;
-    // std :: cout << mapped_pos << "   <---pos" << std :: endl;
-    // return (float)mapped_pos * ((float)field_side_length / (float)frequency);
-    // potentialy simpler: return mapped_pos / (float) freq
-
 }
 
 
 float gradient_field :: map_to_field_y(float point) {
     point = positive_mod(point, field_side_len);
     return (float)(point - field_start_y) / (float)field_side_len * (gradients_per_side - 1);
-    // int mapped_pos = positive_mod(point, field_side_length);
-    // mapped_pos /= field_side_length;
-    // std :: cout << mapped_pos << "   <---pos" << std :: endl;
-    // return (float)mapped_pos * ((float)field_side_length / (float)frequency);
-    // potentialy simpler: return mapped_pos / (float) freq
-
 }
 
 

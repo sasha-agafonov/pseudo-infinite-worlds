@@ -1,58 +1,54 @@
 #include "camera.hpp"
+#include "extern.hpp"
 #include <iostream>
 #include <cmath>
-#include "extern.hpp"
+#include <GLFW/glfw3.h>
 
 #define STAB_RATE 0.01
 
-camera :: camera(glm :: vec3 look_from, glm :: vec3 look_at, glm :: vec3 look_up, int chunk_side_length, terrain* polite_terrain) {
+camera :: camera(glm :: vec3 look_from, glm :: vec3 look_at, glm :: vec3 look_up, terrain* polite_terrain) {
 
     this -> look_from = look_from;
     this -> look_at = look_at;
     this -> look_up = look_up;
-    this -> chunk_side_length = chunk_side_length;
-    this -> polite_terrain = polite_terrain;
 
-    adjust_rate = 23;
-    adjust_step = 0;
+    this -> polite_terrain = polite_terrain;
+    this -> chunk_side_length = polite_terrain -> chunk_side_vertices - 1;
+    this -> camera_shake = false;
 
     discrete_position = look_from;
-    previous_time = 0;
+    prev_time = 0;
 }
 
 
-glm :: mat4 camera :: get_view_mx(double time) {
+glm :: mat4 camera :: get_view_mx() {
 
-    previous_time = time;
     return glm :: lookAt(look_from, look_at, look_up);
+
 }
 
 
-glm :: mat4 camera :: auto_move_forward(double time) {
+void camera :: auto_move_forward() {
 
-    float delta_time = time - previous_time;
-    previous_time = time;
+    float delta_time = curr_time - prev_time;
     look_from.z -= delta_time;
     look_at.z -= delta_time;
-    //std :: cout << look_from.z << std :: endl;
-    return glm :: lookAt(look_from, look_at, look_up);
+
 }
 
 
-glm :: mat4 camera :: auto_move_backwards(double time) {
+void camera :: auto_move_backwards() {
 
-    float delta_time = time - previous_time;
-    previous_time = time;
+    float delta_time = curr_time - prev_time;
     look_from.z += delta_time;
     look_at.z += delta_time;
-    //std :: cout << look_from.z << std :: endl;
-    return glm :: lookAt(look_from, look_at, look_up);
+
 }
 
 
 void camera :: adjust_height() {
 
-        look_from.y = 4 + polite_terrain -> get_terrain_height(look_from.x, look_from.z);
+    look_from.y = 4 + polite_terrain -> get_terrain_height(look_from.x, look_from.z);
 
 }
 
@@ -74,27 +70,72 @@ void camera :: stabilise() {
 }
 
 
-void camera :: shake(double time) {
+void camera :: shake() {
 
     if (!disaligned) disaligned = true;
 
     // sideways
-    look_up.x = 0.015f * (std :: sin(0.2f * time));
+    look_up.x = 0.015f * (std :: sin(0.2f * curr_time));
 
     // up/down
-    look_from.y += 0.5f * (std :: sin(0.5f * time));
+    look_from.y += 0.5f * (std :: sin(0.5f * curr_time));
     look_at.y = look_from.y;
 
 }
 
-void camera :: process_position(double time) {
+void camera :: toggle_camera_shake() {
 
-    adjust_height();
+    camera_shake ? camera_shake = false : camera_shake = true;
 
-    if (extern_movement_mode == AUTO_FORWARD || extern_movement_mode == AUTO_BACKWARDS) shake(time);
+}
+
+
+void camera :: run() {
+
+    if (extern_movement_mode == AUTO_FORWARD || extern_movement_mode == AUTO_BACKWARDS) shake();
     else if (disaligned) stabilise();
 
+    switch(extern_movement_mode) {
 
+        case AUTO_FORWARD:
+            auto_move_forward();
+            break;
+
+        case AUTO_BACKWARDS:
+            auto_move_backwards();
+            break;
+    }
+}
+
+
+void camera :: update_chunk_distances() {
+
+    for (auto& chunk_row : polite_terrain -> chunks) {
+        for (auto& chunk : chunk_row) {
+            chunk.update_distance(glm :: vec2(look_from.x, look_from.z));
+        }
+    }
+}
+
+
+void camera :: process_position() {
+
+    // if (extern_movement_mode == FULL_STOP) {
+    //     curr_time = glfwGetTime() * 34;
+    //     prev_time = curr_time;
+    //     return;
+    //
+    // }
+
+    curr_time = glfwGetTime() * 34;
+    adjust_height();
+
+    if (extern_movement_mode != FULL_STOP) {
+
+
+        run();
+
+    }
 
 
     float allowed_position_change = float(chunk_side_length) / 2.f;
@@ -118,5 +159,9 @@ void camera :: process_position(double time) {
 
         polite_terrain -> update_scene(glm :: ivec2(discrete_direction.x, discrete_direction.y));
     }
+
+    prev_time = curr_time;
+
+        if (!extern_movement_mode == FULL_STOP) update_chunk_distances();
 
 }

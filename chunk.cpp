@@ -8,9 +8,9 @@
 #define SEED 53122
 
 
-chunk :: chunk(int chunk_side_length, int chunk_start_x, int chunk_start_y, terrain* polite_terrain) {
+chunk :: chunk(int chunk_side_vertices, int chunk_start_x, int chunk_start_y, terrain* polite_terrain) {
 
-    this -> vertices_per_side = chunk_side_length + 1;
+    this -> vertices_per_side = chunk_side_vertices;
     this -> polite_terrain = polite_terrain;
 
     build_vertices(chunk_start_x, chunk_start_y);
@@ -19,31 +19,35 @@ chunk :: chunk(int chunk_side_length, int chunk_start_x, int chunk_start_y, terr
 }
 
 
+
+void chunk :: print_info() {
+
+    std :: cout << std :: endl;
+    std :: cout << "start.x = " << chunk_start.x << " start.y = " << chunk_start.y << std :: endl;
+    std :: cout << "side len = " << (vertices_per_side - 1) << std :: endl;
+    std :: cout << "gpos.x = " << global_pos.x << " gpos.y = " << global_pos.y << std :: endl;
+    std :: cout << "distance = " << distance;
+    std :: cout << "lod = " << lod << std :: endl;
+
+}
+
+
 void chunk :: build_vertices(int chunk_start_x, int chunk_start_y) {
 
     this -> chunk_start.x = chunk_start_x;
     this -> chunk_start.y = chunk_start_y;
-
-    float tp  = 0 ;
-
-    build_gradients(chunk_start.x, chunk_start.y);
-
-    float aligner = (float)(GRADIENTS_PER_SIDE - 1) / (float)(vertices_per_side - 1);
+    this -> global_pos.x = chunk_start.y - ((vertices_per_side - 1) / 2);
+    this -> global_pos.y = chunk_start.x - ((vertices_per_side - 1) / 2);
 
     for (int vertex_y = chunk_start.y; vertex_y < chunk_start.y + vertices_per_side; vertex_y++) {
 
         for (int vertex_x = chunk_start.x; vertex_x < chunk_start.x + vertices_per_side; vertex_x++) {
 
-            // right-handed from now on
             vertices.push_back(vertex_y);
-            //tp = polite_terrain -> some_meth();
-            //vertices.push_back(12 *  perlin_noise(vertex_y * aligner, vertex_x * aligner));
-
-
             vertices.push_back(polite_terrain -> get_terrain_height(vertex_y, vertex_x));
-            //vertices.push_back(0.f);
             vertices.push_back(vertex_x);
 
+            // normals
             vertices.push_back(0.f);
             vertices.push_back(1.f);
             vertices.push_back(0.f);
@@ -100,14 +104,15 @@ void chunk :: set_buffers() {
 
     // unbind vertex array
     glBindVertexArray(0);
+
 }
 
 
 void chunk :: draw() {
-    glBindVertexArray(vao);
 
-    
+    glBindVertexArray(vao);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+
 }
 
 
@@ -123,101 +128,32 @@ void chunk :: update_vertices(int shift_x, int shift_y) {
 }
 
 
-void chunk :: build_gradients(int position_x, int position_y) {
+void chunk :: update_distance(glm :: vec2 observer_pos) {
+
+    distance = glm :: distance(global_pos, observer_pos);
+
+    set_lod();
+
+}
 
 
-    int side_length = vertices_per_side - 1;
-    float incrementer = (float)(side_length) / (GRADIENTS_PER_SIDE - 1);
-    //std :: cout << "inc: " << incrementer << std :: endl;
-    std :: vector <glm :: vec2> gradient_row;
-    //std :: cout << "gradients:" << std :: endl;
+void chunk :: set_lod() {
 
-    //std :: vector<T>().swap(gradients);
-    gradients.clear();
-
-    for (float gradient_y = chunk_start.y; gradient_y <= chunk_start.y + side_length; gradient_y += incrementer) {
-
-        for (float gradient_x = chunk_start.x; gradient_x <= chunk_start.x + side_length; gradient_x += incrementer) {
-
-            //std :: cout << "(" << gradient_y << ", " << gradient_x << ")";
-
-            //glm :: vec2 test = get_gradient((int)gradient_x, (int)gradient_y);
-            gradient_row.push_back(get_gradient((int)gradient_y, (int)gradient_x));
-
-
-        }
-        //std :: cout << std ::endl;
-
-        gradients.push_back(gradient_row);
-        //std :: cout << "over " << std :: endl;
+    if (distance < 0) {
+        std :: cerr << "negative distance to one of the chunks detected!" << std :: endl;
+        exit(1);
     }
-    int m = 0;
-    for (int i = 0; i < gradients.size(); i++) {
-        for (int j = 0; j < gradients[0].size(); j++) {
-            m++;
-        }
-    }
-    //std :: cout << "grads per chu: " << m << std ::endl;
-    //std :: cout << "hangup " << std :: endl;
-}
 
+    // 16 * 16 = 256
+    // 8 * 8
+    // 4 4
+    // 2 2
+    // 1 1
 
-float chunk :: perlin_noise(float point_x, float point_y) {
+    if (distance >= 0 && distance < 64) lod = 0;
+    else if (distance >= 64 && distance < 256) lod = 1;
+    else if (distance >= 256 && distance < 512) lod = 2;
+    else if (distance >= 512 && distance < 1024) lod = 3;
+    else lod = 4;
 
-    int x0 = (int)floor(point_x);
-    int x1 = x0 + 1;
-    int y0 = (int)floor(point_y);
-    int y1 = y0 + 1;
-
-    float sx = point_x - (float)x0;
-    float sy = point_y - (float)y0;
-    float n0, n1, ix0, ix1, value;
-
-    n0 = dotGridGradient(x0, y0, point_x, point_y);
-    n1 = dotGridGradient(x1, y0, point_x, point_y);
-    ix0 = smoothstep(n0, n1, sx);
-
-    n0 = dotGridGradient(x0, y1, point_x, point_y);
-    n1 = dotGridGradient(x1, y1, point_x, point_y);
-    ix1 = smoothstep(n0, n1, sx);
-
-    value = smoothstep(ix0, ix1, sy);
-    return value;
-
-}
-
-
-float chunk :: smoothstep(float vec_1, float vec_2, float weight) {
-
-    if (weight < 0.f) return vec_1;
-    if (weight > 1.f) return vec_2;
-
-    return (vec_2 - vec_1) * ((weight * (weight * 6 - 15) + 10) * weight * weight * weight) + vec_1;
-}
-
-
-
-float chunk :: dotGridGradient(int ix, int iy, float x, float y) {
-    // Get gradient from integer coordinates
-    glm :: vec2 gradient = get_gradient(ix, iy);
-
-    // Compute the distance vector
-    float dx = x - (float)ix;
-    float dy = y - (float)iy;
-
-    // Compute the dot-product
-    return (dx * gradient.x + dy * gradient.y);
-}
-
-
-glm :: vec2 chunk :: get_gradient(int ix, int iy) {
-    const unsigned w = 8 * sizeof(unsigned);
-    const unsigned s = w / 2; // rotation width
-    unsigned a = ix, b = iy;
-    a *= 3284157443; b ^= a << s | a >> w-s;
-    b *= 1911520717; a ^= b << s | b >> w-s;
-    a *= 2048419325;
-    float random = a * (3.14159265 / ~(~0u >> 1));
-    glm :: vec2 gradient(cos(random), sin(random));
-    return gradient;
 }

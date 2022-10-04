@@ -80,7 +80,7 @@ void terrain :: build_chunks() {
     for (int i = 0; i < terrain_side_chunks; i++) {
         std :: vector <chunk> chunk_row;
 
-        for (int k = 0; k < terrain_side_chunks; k++) chunk_row.emplace_back(chunk_side_length, chunk_side_length * i, chunk_side_length * k, this);
+        for (int k = 0; k < terrain_side_chunks; k++) chunk_row.emplace_back(chunk_side_vertices, chunk_side_length * i, chunk_side_length * k, this);
         chunks.push_back(chunk_row);
     }
 
@@ -99,14 +99,6 @@ void terrain :: build_gradient_fields() {
     gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 5, 1.f);
 
 }
-
-
-// float terrain :: get_max_height() {
-//     if (!gradient_fields.size()) return 0.f;
-//     float height = 0;
-//     for (auto& field : gradient_fields) height += field.amplitude;
-//     return height;
-// }
 
 
 void terrain :: update_scene(glm :: ivec2 position_change) {

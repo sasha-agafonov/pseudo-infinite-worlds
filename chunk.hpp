@@ -10,35 +10,39 @@ class chunk {
 
     public:
 
-        chunk(int chunk_side_length, int chunk_start_x, int chunk_start_y, terrain* polite_terrain);
+        chunk(int vertices_per_side, int chunk_start_x, int chunk_start_y, terrain* polite_terrain);
 
+        int lod;
+
+        void print_info();
         void update_vertices(int chunk_start_x, int chunk_start_y);
         void build_vertices(int chunk_start_x, int chunk_start_y);
-        void build_gradients(int chunk_start_x, int chunk_start_y);
-        void build_indices(); 
+        void build_indices();
         void set_buffers();
+
         void draw();
+        void update_distance(glm :: vec2 observer_pos);
 
-        float dotGridGradient(int ix, int iy, float x, float y);
 
-        glm :: vec2 get_gradient(int ,int );
-
-        float perlin_noise(float position_x, float position_y);
-        float smoothstep(float vec_1, float vec_2, float weight);
+    private:
 
         int vertices_per_side;
+
+        unsigned int vao;
+        unsigned int vbo;
+        unsigned int ebo;
+
+        float distance;
 
         terrain *polite_terrain;
 
         glm :: vec2 chunk_start;
+        glm :: vec2 global_pos;
+
         std :: vector <float> vertices;
         std :: vector <unsigned int> indices;
-        std :: vector <std :: vector <glm :: vec2>> gradients;
-        std :: vector <std :: vector <glm :: vec2>> gradients_2;
 
-    private:
-
-        unsigned int vao, vbo, ebo;
+        void set_lod();
 
 };
 

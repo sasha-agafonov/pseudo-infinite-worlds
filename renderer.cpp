@@ -45,8 +45,7 @@ void renderer :: set_camera() {
     glm :: vec3 look_at((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 50.f, 0.f);
     glm :: vec3 look_up(0.f, 1.f, 0.f);
 
-    happy_camera = new camera(look_from, look_at, look_up, CHUNK_SIDE_LENGTH, polite_terrain);
-    //happy_camera -> polite_terrain = polite_terrain;
+    happy_camera = new camera(look_from, look_at, look_up, polite_terrain);
 
 }
 
@@ -140,19 +139,18 @@ void renderer :: render_scene() {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        happy_camera -> process_position();
+
 
         glm :: vec3 view_position = happy_camera -> look_from;
 
-        float current_time = glfwGetTime() * 34;
         //model_mx = glm :: rotate(model_mx, current_time * glm :: radians(50.0f), glm :: vec3(0.f, 1.f, 0.f));
 
-        if (extern_movement_mode == AUTO_FORWARD) view_mx = happy_camera -> auto_move_forward(current_time);
-        else if (extern_movement_mode == AUTO_BACKWARDS) view_mx = happy_camera -> auto_move_backwards(current_time);
-        else view_mx = happy_camera -> get_view_mx(current_time);
+        view_mx = happy_camera -> get_view_mx();
 
         //view_mx = glm :: translate(view_mx ,glm :: vec3(0.f, 0.f, -40.f));
         //happy_camera -> adjust_height();
-        happy_camera -> process_position(current_time);
+
 
 
         model_mx = glm :: mat4(1.f);
