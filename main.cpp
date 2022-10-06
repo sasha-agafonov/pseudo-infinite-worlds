@@ -37,6 +37,7 @@ void GLAPIENTRY MessageCallback(GLenum source,
 // GLFW error callback
 void error_callback(int error, const char* description) {
     std :: cerr << "error callback!" << std :: endl;
+    std :: cout << description << std :: endl;
 }
 
 
@@ -49,7 +50,20 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 
+void command_args(int argc, char *argv[]) {
 
+    if (argc <= 1) return;
+    std :: vector <std :: string> arguments(argv, argv + argc);
+
+    if (argc == 2 && arguments[1] == "debug") {
+        glEnable(GL_DEBUG_OUTPUT);
+        glDebugMessageCallback(MessageCallback, 0);
+        return;
+    }
+
+    std :: cerr << "unknown arguments" << std :: endl;
+    
+}
 
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
@@ -105,8 +119,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 
-int main(void) {
-
+int main(int argc, char *argv[]) {
+  
     GLFWwindow* window;
     glfwSetErrorCallback(error_callback);
 
@@ -126,11 +140,9 @@ int main(void) {
 
     gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
 
-    renderer* bad_renderer = new renderer(window);
+    command_args(argc, argv);
 
-    // disable debugging for performance
-    glEnable(GL_DEBUG_OUTPUT);
-    glDebugMessageCallback(MessageCallback, 0);
+    renderer* bad_renderer = new renderer(window);
 
     bad_renderer -> set_scene();
     bad_renderer -> render_scene();

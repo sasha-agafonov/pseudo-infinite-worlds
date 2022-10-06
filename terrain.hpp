@@ -38,12 +38,13 @@ class terrain {
         int chunk_selector_y;
         int det_levels;
 
-        GLuint vertex_array;
-        std :: vector <GLuint> element_ids;
+
+        //std :: vector <GLuint> element_ids;
 
         //std :: vector <std :: vector <std ::vector>>> element_buffers;
         std :: vector <gradient_field> gradient_fields;
         std :: vector <std :: vector <chunk>> chunks;
+
 
         float get_max_height();
         float get_min_height();
@@ -54,6 +55,10 @@ class terrain {
         void build_gradient_fields();
         void build_indices();
         void set_buffers();
+
+        GLuint vertex_array;
+        std :: vector <GLuint> index_buffers;
+        std :: vector <std :: vector <std ::vector <GLuint>>> indices;
 
 };
 

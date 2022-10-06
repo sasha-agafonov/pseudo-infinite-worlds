@@ -13,6 +13,8 @@ class chunk {
         chunk(int vertices_per_side, int chunk_start_x, int chunk_start_y, terrain* polite_terrain);
 
         int lod;
+        int curr_lod;
+        int prev_lod;
 
         void print_info();
         void update_vertices(int chunk_start_x, int chunk_start_y);

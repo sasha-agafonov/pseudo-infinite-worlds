@@ -78,7 +78,7 @@ void camera :: shake() {
     look_up.x = 0.015f * (std :: sin(0.2f * curr_time));
 
     // up/down
-    look_from.y += 0.5f * (std :: sin(0.5f * curr_time));
+    look_from.y += 0.3f * (std :: sin(0.65f * curr_time));
     look_at.y = look_from.y;
 
 }
