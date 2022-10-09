@@ -177,6 +177,30 @@ chunk.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/chunk.cpp.s
 .PHONY : chunk.cpp.s
 
+dynamic_indices.o: dynamic_indices.cpp.o
+.PHONY : dynamic_indices.o
+
+# target to build an object file
+dynamic_indices.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/dynamic_indices.cpp.o
+.PHONY : dynamic_indices.cpp.o
+
+dynamic_indices.i: dynamic_indices.cpp.i
+.PHONY : dynamic_indices.i
+
+# target to preprocess a source file
+dynamic_indices.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/dynamic_indices.cpp.i
+.PHONY : dynamic_indices.cpp.i
+
+dynamic_indices.s: dynamic_indices.cpp.s
+.PHONY : dynamic_indices.s
+
+# target to generate assembly for a file
+dynamic_indices.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/dynamic_indices.cpp.s
+.PHONY : dynamic_indices.cpp.s
+
 glad.o: glad.c.o
 .PHONY : glad.o
 
@@ -432,6 +456,9 @@ help:
 	@echo "... chunk.o"
 	@echo "... chunk.i"
 	@echo "... chunk.s"
+	@echo "... dynamic_indices.o"
+	@echo "... dynamic_indices.i"
+	@echo "... dynamic_indices.s"
 	@echo "... glad.o"
 	@echo "... glad.i"
 	@echo "... glad.s"

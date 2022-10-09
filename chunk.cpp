@@ -8,10 +8,13 @@
 #define SEED 53122
 
 
-chunk :: chunk(int chunk_side_vertices, int chunk_start_x, int chunk_start_y, terrain* polite_terrain) {
+chunk :: chunk(int chunk_side_vertices, int chunk_start_x, int chunk_start_y, 
+               terrain* polite_terrain, dynamic_indices* lod_object) {
 
     this -> vertices_per_side = chunk_side_vertices;
     this -> polite_terrain = polite_terrain;
+    this -> lod_object = lod_object;
+    this -> lod = 0;
 
     build_vertices(chunk_start_x, chunk_start_y);
     build_indices();
@@ -111,7 +114,13 @@ void chunk :: set_buffers() {
 void chunk :: draw() {
 
     glBindVertexArray(vao);
-    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+
+    lod_object -> bind_index_buffer(lod);
+
+    glDrawElements(GL_TRIANGLES, lod_object -> get_num_indices(lod), GL_UNSIGNED_INT, 0);
+
+
+    //glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
 }
 
@@ -150,8 +159,8 @@ void chunk :: set_lod() {
     // 2 2
     // 1 1
 
-    if (distance >= 0 && distance < 64) lod = 0;
-    else if (distance >= 64 && distance < 256) lod = 1;
+    if (distance >= 0 && distance < 128) lod = 0;
+    else if (distance >= 128 && distance < 256) lod = 1;
     else if (distance >= 256 && distance < 512) lod = 2;
     else if (distance >= 512 && distance < 1024) lod = 3;
     else lod = 4;

@@ -41,8 +41,8 @@ void renderer :: set_terrain() {
 
 void renderer :: set_camera() {
 
-    glm :: vec3 look_from((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 50.f, (CHUNKS_Y ) * (CHUNK_SIDE_LENGTH / 2.f));
-    glm :: vec3 look_at((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 50.f, 0.f);
+    glm :: vec3 look_from((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 0.f, (CHUNKS_Y ) * (CHUNK_SIDE_LENGTH / 2.f));
+    glm :: vec3 look_at((CHUNKS_X ) * (CHUNK_SIDE_LENGTH / 2.f), 0.f, 0.f);
     glm :: vec3 look_up(0.f, 1.f, 0.f);
 
     happy_camera = new camera(look_from, look_at, look_up, polite_terrain);

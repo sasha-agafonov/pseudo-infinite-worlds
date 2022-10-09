@@ -3,14 +3,19 @@
 
 #include <vector>
 #include <glm/ext.hpp>
+#include "dynamic_indices.hpp"
+
 
 class terrain;
+
+class dynamic_indices;
 
 class chunk {
 
     public:
 
-        chunk(int vertices_per_side, int chunk_start_x, int chunk_start_y, terrain* polite_terrain);
+        chunk(int vertices_per_side, int chunk_start_x, int chunk_start_y, 
+              terrain* polite_terrain, dynamic_indices* lod_object);
 
         int lod;
         int curr_lod;
@@ -37,6 +42,7 @@ class chunk {
         float distance;
 
         terrain *polite_terrain;
+        dynamic_indices *lod_object;
 
         glm :: vec2 chunk_start;
         glm :: vec2 global_pos;

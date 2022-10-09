@@ -10,7 +10,9 @@
 
 #include "chunk.hpp"
 #include "gradient_field.hpp"
+#include "dynamic_indices.hpp"
 
+class chunk;
 
 class terrain {
 

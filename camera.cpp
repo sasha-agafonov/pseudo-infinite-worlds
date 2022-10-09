@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 
 #define STAB_RATE 0.01
+#define CAMERA_ELEV 4
 
 camera :: camera(glm :: vec3 look_from, glm :: vec3 look_at, glm :: vec3 look_up, terrain* polite_terrain) {
 
@@ -48,7 +49,7 @@ void camera :: auto_move_backwards() {
 
 void camera :: adjust_height() {
 
-    look_from.y = 4 + polite_terrain -> get_terrain_height(look_from.x, look_from.z);
+    look_from.y = CAMERA_ELEV + polite_terrain -> get_terrain_height(look_from.x, look_from.z);
 
 }
 
@@ -79,6 +80,7 @@ void camera :: shake() {
 
     // up/down
     look_from.y += 0.3f * (std :: sin(0.65f * curr_time));
+
     look_at.y = look_from.y;
 
 }
