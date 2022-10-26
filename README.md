@@ -20,5 +20,6 @@
 - Gradient-based mesh colouring
 - Animated procedural 2D clouds
 - Shadow mapping
+- Quaternions
 - Biomes and vegetation
 - Bloom and HDR

@@ -97,7 +97,10 @@ void terrain :: build_chunks() {
 
 void terrain :: build_gradient_fields() {
 
-    //gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 4400, 155.f);
+
+    gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 900, 122.f);
+
+    gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 4400, 21.f);
     gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 800, 55.f);
     gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 77, 22.f);
     gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 120, 31.f);

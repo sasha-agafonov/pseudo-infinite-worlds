@@ -137,6 +137,18 @@ void chunk :: update_vertices(int shift_x, int shift_y) {
 }
 
 
+
+// void chunk :: update_vertices(int shift_x, int shift_y) {
+
+//     glBindBuffer(GL_ARRAY_BUFFER, vbo);
+//     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), NULL, GL_DYNAMIC_DRAW);
+//     vertices.clear();
+//     build_vertices(chunk_start.x + shift_x, chunk_start.y + shift_y);
+//     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_DYNAMIC_DRAW);
+
+// }
+
+
 void chunk :: update_distance(glm :: vec2 observer_pos) {
 
     distance = glm :: distance(global_pos, observer_pos);
