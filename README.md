@@ -17,6 +17,7 @@
 - Mesh representation with triangular irregular networks
 - Asynchronous generation
 - Tesselation shaders
+- Frustum culling
 - Gradient-based mesh colouring
 - Animated procedural 2D clouds
 - Shadow mapping
