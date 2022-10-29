@@ -9,15 +9,15 @@
 
 
 chunk :: chunk(int chunk_side_vertices, int chunk_start_x, int chunk_start_y, 
-               terrain* polite_terrain, dynamic_indices* lod_object) {
+               terrain* polite_terrain, lod_controller* controller) {
 
     this -> vertices_per_side = chunk_side_vertices;
     this -> polite_terrain = polite_terrain;
-    this -> lod_object = lod_object;
+    this -> controller = controller;
     this -> lod = 0;
 
     build_vertices(chunk_start_x, chunk_start_y);
-    build_indices();
+   // build_indices();
     set_buffers();
 }
 
@@ -59,22 +59,22 @@ void chunk :: build_vertices(int chunk_start_x, int chunk_start_y) {
 }
 
 
-void chunk :: build_indices() {
+// void chunk :: build_indices() {
 
-    for (int index_y = 0; index_y < vertices_per_side - 1; index_y++) {
+//     for (int index_y = 0; index_y < vertices_per_side - 1; index_y++) {
 
-        for (int index_x = 0; index_x < vertices_per_side - 1; index_x++) {
+//         for (int index_x = 0; index_x < vertices_per_side - 1; index_x++) {
 
-            indices.push_back(index_x + (index_y) * vertices_per_side);
-            indices.push_back(index_x + (index_y) * vertices_per_side + 1);
-            indices.push_back(index_x + (index_y + 1) * vertices_per_side);
+//             indices.push_back(index_x + (index_y) * vertices_per_side);
+//             indices.push_back(index_x + (index_y) * vertices_per_side + 1);
+//             indices.push_back(index_x + (index_y + 1) * vertices_per_side);
 
-            indices.push_back(index_x + (index_y) * vertices_per_side + 1);
-            indices.push_back(index_x + (index_y + 1) * vertices_per_side + 1);
-            indices.push_back(index_x + (index_y + 1) * vertices_per_side);
-        }
-    }
-}
+//             indices.push_back(index_x + (index_y) * vertices_per_side + 1);
+//             indices.push_back(index_x + (index_y + 1) * vertices_per_side + 1);
+//             indices.push_back(index_x + (index_y + 1) * vertices_per_side);
+//         }
+//     }
+// }
 
 
 void chunk :: set_buffers() {
@@ -115,9 +115,9 @@ void chunk :: draw() {
 
     glBindVertexArray(vao);
 
-    lod_object -> bind_index_buffer(lod);
+    controller -> bind_index_buffer(lod);
 
-    glDrawElements(GL_TRIANGLES, lod_object -> get_num_indices(lod), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, controller -> get_num_indices(lod), GL_UNSIGNED_INT, 0);
 
 
     //glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
@@ -142,7 +142,7 @@ void chunk :: update_vertices(int shift_x, int shift_y) {
 
 //     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 //     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), NULL, GL_DYNAMIC_DRAW);
-//     vertices.clear();
+//     vertices.clear();./m
 //     build_vertices(chunk_start.x + shift_x, chunk_start.y + shift_y);
 //     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_DYNAMIC_DRAW);
 

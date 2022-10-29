@@ -10,7 +10,7 @@
 #### Implemented Features
 - On the fly terrain generation
 - Fractal/domain-warped/ridged Perlin Noise
-- Dynamic LOD
+- Geomipmapping (Dynamic LOD)
 
 #### Planned Features
 - Terrain generation on the GPU

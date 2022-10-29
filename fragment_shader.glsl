@@ -26,6 +26,15 @@ vec3 interpolate_height_colour(vec3 pos) {
     float color_1 = (1.f - 0.367) * pos.y / (5) + 0.367;
     float color_2 = (0.960 - 0.552) * pos.y / (5) + 0.552;
     float color_3 = (0.80 - 0.381) * pos.y / (5) + 0.381;
+/*
+    if (color_2 > 0.96) color_2 = 0.96;
+    if (color_3 > 0.66) color_3 = 0.66;
+
+    if (color_1 < 0.468) color_1 = 0.468;
+    if (color_2 < 0.67) color_2 = 0.67;
+    if (color_3 < 0.78) color_3 = 0.78;
+    */
+
 
     return vec3(color_1, color_2, color_3);
 }

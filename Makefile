@@ -177,30 +177,6 @@ chunk.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/chunk.cpp.s
 .PHONY : chunk.cpp.s
 
-dynamic_indices.o: dynamic_indices.cpp.o
-.PHONY : dynamic_indices.o
-
-# target to build an object file
-dynamic_indices.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/dynamic_indices.cpp.o
-.PHONY : dynamic_indices.cpp.o
-
-dynamic_indices.i: dynamic_indices.cpp.i
-.PHONY : dynamic_indices.i
-
-# target to preprocess a source file
-dynamic_indices.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/dynamic_indices.cpp.i
-.PHONY : dynamic_indices.cpp.i
-
-dynamic_indices.s: dynamic_indices.cpp.s
-.PHONY : dynamic_indices.s
-
-# target to generate assembly for a file
-dynamic_indices.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/dynamic_indices.cpp.s
-.PHONY : dynamic_indices.cpp.s
-
 glad.o: glad.c.o
 .PHONY : glad.o
 
@@ -296,6 +272,30 @@ light.s: light.cpp.s
 light.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/light.cpp.s
 .PHONY : light.cpp.s
+
+lod_controller.o: lod_controller.cpp.o
+.PHONY : lod_controller.o
+
+# target to build an object file
+lod_controller.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/lod_controller.cpp.o
+.PHONY : lod_controller.cpp.o
+
+lod_controller.i: lod_controller.cpp.i
+.PHONY : lod_controller.i
+
+# target to preprocess a source file
+lod_controller.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/lod_controller.cpp.i
+.PHONY : lod_controller.cpp.i
+
+lod_controller.s: lod_controller.cpp.s
+.PHONY : lod_controller.s
+
+# target to generate assembly for a file
+lod_controller.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/lod_controller.cpp.s
+.PHONY : lod_controller.cpp.s
 
 main.o: main.cpp.o
 .PHONY : main.o
@@ -456,9 +456,6 @@ help:
 	@echo "... chunk.o"
 	@echo "... chunk.i"
 	@echo "... chunk.s"
-	@echo "... dynamic_indices.o"
-	@echo "... dynamic_indices.i"
-	@echo "... dynamic_indices.s"
 	@echo "... glad.o"
 	@echo "... glad.i"
 	@echo "... glad.s"
@@ -471,6 +468,9 @@ help:
 	@echo "... light.o"
 	@echo "... light.i"
 	@echo "... light.s"
+	@echo "... lod_controller.o"
+	@echo "... lod_controller.i"
+	@echo "... lod_controller.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

@@ -137,8 +137,8 @@ void renderer :: render_scene() {
 
     while (!glfwWindowShouldClose(window)) {
 
+        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
         happy_camera -> process_position();
 
 

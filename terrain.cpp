@@ -77,7 +77,7 @@ terrain :: terrain(int terrain_side_chunks, int chunk_side_vertices, glm :: vec3
 
 void terrain :: build_chunks() {
 
-    dynamic_indices* lod_object = new dynamic_indices(chunk_side_vertices);
+    lod_controller* lod_object = new lod_controller(chunk_side_vertices);
 
     for (int i = 0; i < terrain_side_chunks; i++) {
         std :: vector <chunk> chunk_row;

@@ -10,7 +10,7 @@
 
 #include "chunk.hpp"
 #include "gradient_field.hpp"
-#include "dynamic_indices.hpp"
+#include "lod_controller.hpp"
 
 class chunk;
 

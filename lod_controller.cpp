@@ -2,11 +2,11 @@
 
 #include <GLFW/glfw3.h>
 
-#include "dynamic_indices.hpp"
+#include "lod_controller.hpp"
 #include <iostream>
 
 
-dynamic_indices :: dynamic_indices(int chunk_side_vertices) {
+lod_controller :: lod_controller(int chunk_side_vertices) {
 
     int chunk_len = chunk_side_vertices - 1;
     int chunk_side_vertices2 = chunk_side_vertices;
@@ -23,10 +23,12 @@ dynamic_indices :: dynamic_indices(int chunk_side_vertices) {
         chunk_len /= 2;
 
     }
+
+    min_lod = lod;
 }
 
 
-void dynamic_indices :: build_index_buffer(int lod) {
+void lod_controller :: build_index_buffer(int lod) {
 
     // should (technically) be gl_element_array_buffer, 
     // but opengl might not allow this since no vao was specified.
@@ -59,21 +61,37 @@ void dynamic_indices :: build_index_buffer(int lod) {
 
 
 
-void dynamic_indices :: build_index_vector(int lod, int chunk_side_vertices) {
+void lod_controller :: build_index_vector(int lod, int chunk_side_vertices) {
 
     std :: vector <GLuint> indices;
     
-    for (int index_y = 0; index_y < chunk_side_vertices - 1; index_y += pow(2, lod)) {
+    for (int index_y = 0, diamond = 0; index_y < chunk_side_vertices - 1; index_y += pow(2, lod), ++diamond) {
 
-        for (int index_x = 0; index_x < chunk_side_vertices - 1; index_x += pow(2, lod)) {
+        for (int index_x = 0; index_x < chunk_side_vertices - 1; index_x += pow(2, lod), ++diamond) {
 
-            indices.push_back(index_x + (index_y) * chunk_side_vertices);
-            indices.push_back(index_x + (index_y) * chunk_side_vertices + pow(2, lod));
-            indices.push_back(index_x + (index_y + pow(2, lod)) * chunk_side_vertices);
+            if (diamond & 1) {
 
-            indices.push_back(index_x + (index_y) * chunk_side_vertices + pow(2, lod));
-            indices.push_back(index_x + (index_y + pow(2, lod)) * chunk_side_vertices + pow(2, lod));
-            indices.push_back(index_x + (index_y + pow(2, lod)) * chunk_side_vertices);
+                indices.push_back(index_x + (index_y) * chunk_side_vertices);
+                indices.push_back(index_x + (index_y) * chunk_side_vertices + pow(2, lod));
+                indices.push_back(index_x + (index_y + pow(2, lod)) * chunk_side_vertices);
+
+                indices.push_back(index_x + (index_y) * chunk_side_vertices + pow(2, lod));
+                indices.push_back(index_x + (index_y + pow(2, lod)) * chunk_side_vertices + pow(2, lod));
+                indices.push_back(index_x + (index_y + pow(2, lod)) * chunk_side_vertices);
+            }
+
+            else {
+
+                indices.push_back(index_x + (index_y) * chunk_side_vertices); // 0
+                indices.push_back(index_x + (index_y + pow(2, lod)) * chunk_side_vertices + pow(2, lod)); // 3
+                indices.push_back(index_x + (index_y + pow(2, lod)) * chunk_side_vertices); // 2
+
+                indices.push_back(index_x + (index_y) * chunk_side_vertices); // 0
+                indices.push_back(index_x + (index_y) * chunk_side_vertices + pow(2, lod)); // 1
+                indices.push_back(index_x + (index_y + pow(2, lod)) * chunk_side_vertices + pow(2, lod)); // 3
+  
+            }
+
         }
     }
 
@@ -82,7 +100,7 @@ void dynamic_indices :: build_index_vector(int lod, int chunk_side_vertices) {
 }
 
 
-void dynamic_indices :: bind_index_buffer(int lod) {
+void lod_controller :: bind_index_buffer(int lod) {
 
     if (lod > index_buffer_ids.size() - 1) lod = index_buffer_ids.size() - 1;
 
@@ -91,16 +109,21 @@ void dynamic_indices :: bind_index_buffer(int lod) {
 }
 
 
-void dynamic_indices :: print_info() {
+// print info for all lod objects
+void lod_controller :: print_info() {
 
-    for (int i = 0; i < index_buffer_ids.size(); i++) print_info(i);
+    for (auto buffer_id : index_buffer_ids) print_info(buffer_id);
+
+    //for (int i = 0; i < index_buffer_ids.size(); i++) print_info(i);
     
 }
 
 
-void dynamic_indices :: print_info(int lod) {
+// print info for specific lod object
+void lod_controller :: print_info(int lod) {
 
-    std :: cout << "LOD = " << lod << std :: endl;
+    std :: cout << "current LOD = " << lod << std :: endl;
+    std :: cout << "minimum LOD = " << min_lod << std :: endl;
     std :: cout << "index buffer id = " << index_buffer_ids[lod] << std :: endl;
     std :: cout << "index buffer size = " << raw_indices[lod].size() << std :: endl;
 
@@ -111,7 +134,7 @@ void dynamic_indices :: print_info(int lod) {
 }
 
 
-int dynamic_indices :: get_num_indices(int lod) {
+int lod_controller :: get_num_indices(int lod) {
 
     if (lod > index_buffer_ids.size() - 1) lod = index_buffer_ids.size() - 1;
 

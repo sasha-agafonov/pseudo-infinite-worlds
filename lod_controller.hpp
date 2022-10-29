@@ -1,15 +1,16 @@
-#ifndef DYNAMIC_INDICES_HPP
-#define DYNAMIC_INDICES_HPP
+#ifndef LOD_CONTROLLER_HPP
+#define LOD_CONTROLLER_HPP
 
 #include <glm/ext.hpp>
 #include "terrain.hpp"
+#include "lod_object.hpp"
 
 
-class dynamic_indices {
+class lod_controller {
 
     public:
 
-        dynamic_indices(int chunk_side_vertices);
+        lod_controller(int chunk_side_vertices);
 
         int get_num_indices(int lod);
         void bind_index_buffer(int lod);
@@ -21,10 +22,13 @@ class dynamic_indices {
         void build_index_buffer(int lod);
         void build_index_vector(int lod, int chunk_side_vertices);
 
+       // std :: vector <lod_object> lod_objects;
+
         std :: vector <GLuint> index_buffer_ids;
         std :: vector <std :: vector <GLuint>> raw_indices;
-        
 
+        int min_lod;
+        
 };
 
 #endif
