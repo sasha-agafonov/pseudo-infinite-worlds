@@ -55,7 +55,6 @@ void renderer :: set_camera() {
 
 void renderer :: set_states() {
 
-    glDisable(GL_DEBUG_OUTPUT);
     glEnable(GL_MULTISAMPLE);
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.990f, 0.634f, 0.634f, 1.f);

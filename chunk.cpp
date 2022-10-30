@@ -171,6 +171,8 @@ void chunk :: set_lod() {
     // 2 2
     // 1 1
 
+    //lod = 3;
+
     if (distance >= 0 && distance < 128) lod = 0;
     else if (distance >= 128 && distance < 256) lod = 1;
     else if (distance >= 256 && distance < 512) lod = 2;

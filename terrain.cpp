@@ -27,8 +27,8 @@ terrain :: terrain(int terrain_side_chunks, int chunk_side_vertices, glm :: vec3
     int chunk_len = chunk_side_vertices - 1;
 
     // check for correct chunk size
-    if (chunk_len <= 0 || (chunk_len & (chunk_len - 1)) != 0) {
-        std :: cerr << "Error: a chunk must have 2^n + 1 vertices per side (with a minimum of 2)." <<
+    if (chunk_len <= 2 || (chunk_len & (chunk_len - 1)) != 0) {
+        std :: cerr << "Error: a chunk must have 2^n + 1 vertices per side (with a minimum of 3)." <<
         std :: endl << "However, you specified " <<  chunk_side_vertices  << " vertices per side." <<
         std :: endl;
         exit(1);
@@ -99,11 +99,10 @@ void terrain :: build_gradient_fields() {
 
 
     gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 900, 122.f);
-
     gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 4400, 21.f);
-    gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 800, 55.f);
-    gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 77, 22.f);
-    gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 120, 31.f);
+     gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 800, 55.f);
+     gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 77, 22.f);
+     gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 120, 31.f);
     gradient_fields.emplace_back(0, 0, terrain_side_chunks, chunk_side_vertices - 1, 5, 1.f);
 
 }

@@ -50,7 +50,9 @@ float lin_fog(float fragment, float fog_start, float fog_end) {
 
 void main() {
 
-    vec3 height_colour = interpolate_height_colour(vex_pos_p);
+    //vec3 height_colour = interpolate_height_colour(vex_pos_p);
+    vec3 height_colour = vec3(0.367, 0.552, 0.381);
+
 
     vec3 light_direction = normalize(- direction);
     vec3 ndiffuse = diffuse * max(dot(abnormal, light_direction), 0.0);
@@ -78,6 +80,13 @@ void main() {
 
     vec3 last = vec3(cx, cy, cz);
 
+    vec3 vertical = vec3(0.0, 1.0, 0.0);
+    
+    last = vec3(0.25, 0.13, 0.44) *  (1 - dot(vertical, abnormal) + 0.2) + last;
+
     frag_colour = vec4(last, 1.0);
+
+
+
 
 }
