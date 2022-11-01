@@ -19,7 +19,7 @@
 - Tesselation shaders
 - Frustum culling
 - Gradient-based mesh colouring
-- Animated procedural 2D clouds
+- Skybox with animated procedural clouds
 - Shadow mapping
 - Quaternions
 - Biomes and vegetation
