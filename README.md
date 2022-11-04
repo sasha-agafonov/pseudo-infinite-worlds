@@ -14,7 +14,6 @@
 
 #### Planned Features
 - Terrain generation on the GPU
-- Mesh representation with triangular irregular networks
 - Asynchronous generation
 - Tesselation shaders
 - Frustum culling
