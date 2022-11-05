@@ -3,9 +3,9 @@
 
 #### Dependencies
 
-- OpenGL 3.0+  
+- OpenGL 4.6  
 - GLFW 2.7+  
-- C++ 11+
+- C++11+
 
 #### Implemented Features
 - On the fly terrain generation
