@@ -13,6 +13,7 @@
 - Geomipmapping (Dynamic LOD)
 
 #### Planned Features
+- GUI
 - Terrain generation on the GPU
 - Asynchronous generation
 - Tesselation shaders
