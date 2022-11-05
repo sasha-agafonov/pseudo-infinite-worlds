@@ -14,8 +14,7 @@
 
 #### Planned Features
 - GUI
-- Terrain generation on the GPU
-- Asynchronous generation
+- Asynchronous terrain generation on the GPU
 - Tesselation shaders
 - Frustum culling
 - Gradient-based mesh colouring
