@@ -2,6 +2,4 @@
 
 lod_object :: lod_object(int chunk_side_vertices) {
 
-
-	
 }
